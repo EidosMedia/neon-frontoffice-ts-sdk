@@ -1,7 +1,6 @@
 import settings from '../commons/settings';
-import { getLogoUrl } from '../services/sites/sites';
+import { loadSites } from '../services/sites';
 import { Site } from '../types/site';
-import { makeRequest } from './http-client';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
@@ -19,49 +18,42 @@ export class NeonConnection {
     settings.frontOfficeServiceKey = frontOfficeServiceKey;
   }
 
-  async getSiteViewByURL(url: string) {
-    return await makeRequest(`/api/site-view?url=${url}`);
-  }
-
-  async getSitesList() {
+  async getLiveSitesList() {
     if (this.sites.length === 0) {
-      await this.refreshSites();
+      await this.refreshLiveSites();
     }
 
     return this.sites;
   }
 
-  async refreshSites() {
-    const sites = await makeRequest(
-      `/api/sites/live?${new URLSearchParams({
-        siteMap: 'true',
-      }).toString()}`
-    );
+  async refreshLiveSites() {
+    this.sites = await loadSites({ sitemap: true, viewStatus: 'live' });
 
-    const sitesWithSitemap = await Promise.all(
-      sites.map(async (site: Site) => ({
-        ...site,
-        logoUrl: await getLogoUrl(site.root.id, site.apiHostnames.liveHostname),
-      }))
-    );
-
-    this.sites = sitesWithSitemap;
     return this.sites;
   }
 
-  async getSiteByHostname(hostname: string) {
-    const sites = await this.getSitesList();
+  async resolveApiHostname(hostname: string) {
+    const sites = await this.getLiveSitesList();
 
-    return sites.find((site) => site.root.hostname === hostname);
+    const siteFound = sites.find((site) => site.root.hostname === hostname);
+
+    if (siteFound) {
+      return {
+        apiHostname: siteFound.apiHostnames.liveHostname,
+        viewStatus: 'LIVE',
+      };
+    }
+    throw new Error(`Could not resolve hostname: ${hostname}`);
   }
+
   async getSiteByName(name: string) {
-    const sites = await this.getSitesList();
+    const sites = await this.getLiveSitesList();
 
     return sites.find((site) => site.root.name === name);
   }
 
   async getSiteBySiteId(siteId: string) {
-    const sites = await this.getSitesList();
+    const sites = await this.getLiveSitesList();
     return sites.find((site) => site.root.id === siteId);
   }
 }

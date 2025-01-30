@@ -7,6 +7,7 @@ export type SiteNode = {
   path: string;
   items: SiteNode[];
   hostname: string;
+  previewHostname: string;
 };
 
 export type SiteApiHostnames = {
