@@ -1,6 +1,6 @@
 import { makeRequest } from '../../utilities/http-client';
 
-export async function getLogoUrl(id: any, liveHostName: string) {
+export async function getLogoUrl(id: string, liveHostName: string) {
   const requestUrl = `${liveHostName}/api/nodes/${id}`;
   const envProtocol = new URL(process.env.BASE_NEON_FE_URL || '').protocol;
 
