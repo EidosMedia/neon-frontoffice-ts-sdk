@@ -5,12 +5,25 @@ export type PageConfiguration = {
   reactionsEnabled?: boolean;
 };
 
-export type PageModel = {
+export type BaseModel = {
+  id: string;
+  foreignId: string;
+  title: string;
+  sys: Record<string, string>;
+  cacheTTLSeconds: number;
+  files: {
+    content: {
+      mimeType: string;
+    };
+  };
+};
+
+export type PageModel<GenericNodeModel> = {
   aggregators: string[];
   buildDate: string;
   builder: string[];
   builtByConfigModelBuilder: boolean;
-  data: SiteNode;
+  data: GenericNodeModel;
   dataType: string;
   defaultContent: boolean;
   errors: string[];
@@ -19,14 +32,14 @@ export type PageModel = {
   invalidationPriority: number;
   lastModified: number;
   modelSourceClass: string;
-  nodes: Record<string, SiteNode>;
+  nodes: Record<string, BaseModel>;
   page: number;
   totalPages: number;
 };
 
-export type PageData = {
+export type PageData<GenericModel extends BaseModel> = {
   configuration: PageConfiguration;
-  model: PageModel;
+  model: PageModel<GenericModel>;
   nodesUrl: Record<string, string>;
   requestParam: Record<string, string>;
   resourcesUrls: Record<string, string>;
