@@ -10,6 +10,7 @@ export type ContentElement = {
   elements: ContentElement[];
   value: string;
   attributes: Record<string, string>;
+  dynamicCropsResourceUrls?: Record<string, string>;
 };
 
 export type BaseModel = {
