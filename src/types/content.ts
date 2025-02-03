@@ -5,6 +5,13 @@ export type PageConfiguration = {
   reactionsEnabled?: boolean;
 };
 
+export type ContentElement = {
+  nodeType: string;
+  elements: ContentElement[];
+  value: string;
+  attributes: Record<string, string>;
+};
+
 export type BaseModel = {
   id: string;
   foreignId: string;
@@ -13,7 +20,8 @@ export type BaseModel = {
   cacheTTLSeconds: number;
   files: {
     content: {
-      mimeType: string;
+      mimeType?: string;
+      data: ContentElement;
     };
   };
 };
