@@ -22,6 +22,10 @@ export async function makeRequest(url: string, params?: RequestInit) {
     );
   }
 
+  if(response.status === 204) {
+    return response;
+  }
+
   return await response.json();
 }
 
