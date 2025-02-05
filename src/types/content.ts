@@ -55,24 +55,3 @@ export type PageData<GenericModel extends BaseModel> = {
   siteData: Site;
   siteNode: SiteNode;
 };
-
-// ============ DWP models ============
-
-interface Link {
-  targetId: string;
-}
-
-interface PageLink {
-  [key: string]: Link[];
-}
-
-interface Links {
-  pagelink: PageLink;
-}
-
-export type PageDataModel = {
-  attributes: Record<string, unknown>;
-  links: Links;
-  resourceUrl: string;
-  dataType: string;
-} & BaseModel;
