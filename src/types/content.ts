@@ -25,6 +25,9 @@ export type BaseModel = {
       data: ContentElement;
     };
   };
+  links: Links;
+  resourceUrl: string;
+  url: string;
 };
 
 export type PageModel<GenericNodeModel> = {
@@ -55,3 +58,41 @@ export type PageData<GenericModel extends BaseModel> = {
   siteData: Site;
   siteNode: SiteNode;
 };
+
+
+// =============== new 
+
+interface Link {
+  targetId: string;
+}
+
+interface Hyperlink {
+  image: Link[];
+}
+
+interface SoftCrops {
+  Wide: { id: string };
+  Portrait: { id: string };
+  Ultrawide: { id: string };
+  Square: { id: string };
+}
+
+interface Metadata {
+  metadataType: string;
+  softCrops: SoftCrops;
+}
+
+interface MainPicture {
+  targetId: string;
+  metadata: Metadata;
+  dynamicCropsResourceUrls: Record<string, string>;
+}
+
+interface System {
+  mainPicture: MainPicture[];
+}
+
+interface Links {
+  hyperlink: Hyperlink;
+  system: System;
+}
