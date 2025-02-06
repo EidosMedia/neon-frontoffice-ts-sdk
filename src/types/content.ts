@@ -17,6 +17,7 @@ export type BaseModel = {
   id: string;
   foreignId: string;
   title: string;
+  summary: string;
   sys: Record<string, string>;
   cacheTTLSeconds: number;
   files: {
