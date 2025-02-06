@@ -96,3 +96,26 @@ interface Links {
   hyperlink: Hyperlink;
   system: System;
 }
+
+interface PageLinkTargetId {
+  targetId: string;
+}
+
+interface PageLink {
+  [key: string]: PageLinkTargetId[];
+}
+
+interface PageLinks {
+  pagelink: PageLink;
+};
+
+export type WebpageModel = {
+  attributes: Record<string, unknown>;
+  links: PageLinks;
+  resourceUrl: string;
+  dataType: string;
+} & BaseModel;
+
+export type WebpageNodeModel = {
+  mainPicture?: string;
+} & BaseModel;
