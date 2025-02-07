@@ -85,15 +85,12 @@ export class NeonConnection {
   async getDwxLinkedObjects(pageData: PageData<WebpageModel>, zoneName?: string): Promise<WebpageNodeModel[]> {
     const zones = Object.keys(pageData.model.data.links?.pagelink || []);
 
-    if (!zoneName || !zones.length) {
-        const allLinkedObjects = await Promise.all(
-          zones.map(zone => this.getDwxLinkedObjects(pageData, zone))
-        );
-        return allLinkedObjects.flat();
+    let linkedObjects: WebpageNodeModel[] = [];
+
+    if (!zoneName || !zones.length || !pageData.model.data.links?.pagelink[zoneName]) {
+      return linkedObjects;
     }
 
-    let linkedObjects: WebpageNodeModel[] = [];
-  
     try {
         linkedObjects = pageData.model.data.links?.pagelink[zoneName].map(link => {
             const webPageBaseNode = pageData.model.nodes[link.targetId];
