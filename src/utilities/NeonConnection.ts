@@ -2,6 +2,7 @@ import settings from '../commons/settings';
 import { loadSites } from '../services/sites';
 import { Site } from '../types/site';
 import { makeRequest } from '../utilities/http-client';
+import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
@@ -80,4 +81,34 @@ export class NeonConnection {
 
     return await makeRequest(`/api/pages/${contentId}/authorization/${siteName}/${viewStatus}`, options);
   }
+
+  async getDwxLinkedObjects(pageData: PageData<WebpageModel>, zoneName?: string): Promise<WebpageNodeModel[]> {
+    const zones = Object.keys(pageData.model.data.links?.pagelink || []);
+
+    let linkedObjects: WebpageNodeModel[] = [];
+
+    if (!zoneName || !zones.length || !pageData.model.data.links?.pagelink[zoneName]) {
+      return linkedObjects;
+    }
+
+    try {
+        linkedObjects = pageData.model.data.links?.pagelink[zoneName].map(link => {
+            const webPageBaseNode = pageData.model.nodes[link.targetId];
+            
+            const mainPicureId = webPageBaseNode.links.system.mainPicture[0].targetId;
+            const mainPicuretNode = pageData.model.nodes[mainPicureId];
+  
+            const webpageNode: WebpageNodeModel = {
+              ...webPageBaseNode,
+              mainPicture: mainPicuretNode.resourceUrl
+            };
+            
+            return webpageNode;
+        });
+    } catch (e) {
+      throw new Error(`Error during retrieving Dwx linked objects: ${e}`);
+    }
+
+    return linkedObjects;
+  };
 }

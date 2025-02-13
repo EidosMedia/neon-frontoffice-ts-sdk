@@ -17,6 +17,7 @@ export type BaseModel = {
   id: string;
   foreignId: string;
   title: string;
+  summary: string;
   sys: Record<string, string>;
   cacheTTLSeconds: number;
   files: {
@@ -25,6 +26,9 @@ export type BaseModel = {
       data: ContentElement;
     };
   };
+  links: Links;
+  resourceUrl: string;
+  url: string;
 };
 
 export type PageModel<GenericNodeModel> = {
@@ -44,7 +48,7 @@ export type PageModel<GenericNodeModel> = {
   nodes: Record<string, BaseModel>;
   page: number;
   totalPages: number;
-};
+} & BaseModel;
 
 export type PageData<GenericModel extends BaseModel> = {
   configuration: PageConfiguration;
@@ -55,3 +59,64 @@ export type PageData<GenericModel extends BaseModel> = {
   siteData: Site;
   siteNode: SiteNode;
 };
+
+
+// =============== new 
+
+interface Link {
+  targetId: string;
+}
+
+interface Hyperlink {
+  image: Link[];
+}
+
+interface SoftCrops {
+  Wide: { id: string };
+  Portrait: { id: string };
+  Ultrawide: { id: string };
+  Square: { id: string };
+}
+
+interface Metadata {
+  metadataType: string;
+  softCrops: SoftCrops;
+}
+
+interface MainPicture {
+  targetId: string;
+  metadata: Metadata;
+  dynamicCropsResourceUrls: Record<string, string>;
+}
+
+interface System {
+  mainPicture: MainPicture[];
+}
+
+interface Links {
+  hyperlink: Hyperlink;
+  system: System;
+}
+
+interface PageLinkTargetId {
+  targetId: string;
+}
+
+interface PageLink {
+  [key: string]: PageLinkTargetId[];
+}
+
+interface PageLinks {
+  pagelink: PageLink;
+};
+
+export type WebpageModel = {
+  attributes: Record<string, unknown>;
+  links: PageLinks;
+  resourceUrl: string;
+  dataType: string;
+} & BaseModel;
+
+export type WebpageNodeModel = {
+  mainPicture?: string;
+} & BaseModel;

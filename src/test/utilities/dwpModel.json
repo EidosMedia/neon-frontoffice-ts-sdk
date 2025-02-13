@@ -1,0 +1,1278 @@
+{
+    "model": {
+        "id": "model://0296-1cf9c3aeca73-50d5f4d8e2b9-1000/1/null/NE",
+        "data": {
+            "id": "0296-1cf9c3aeca73-50d5f4d8e2b9-1000",
+            "title": "provadwppoc",
+            "sys": {
+                "baseType": "webpage",
+                "type": "webpage"
+            },
+            "attributes": {},
+            "links": {
+                "pagelink": {
+                    "top": [
+                        {
+                            "targetId": "0296-1cf7c25b6434-2d2b47b681fa-1000"
+                        }
+                    ],
+                    "banner": [
+                        {
+                            "targetId": "0296-1cf7c277c316-50d53c872df6-1000"
+                        },
+                        {
+                            "targetId": "0296-1cf7c270e9b5-e4cbabcc881e-1000"
+                        }
+                    ]
+                }
+            },
+            "resourceUrl": "/resources/0296-1cf9c3aeca73-50d5f4d8e2b9-1000",
+            "dataType": "node"
+        },
+        "dataType": "node",
+        "nodes": {
+            "0296-1cf7c24a7432-666dd5bf59a6-1000": {
+                "id": "0296-1cf7c24a7432-666dd5bf59a6-1000",
+                "pubInfo": {
+                    "publicationTime": "2025-02-03T09:27:34.485Z",
+                    "visible": true
+                },
+                "attributes": {},
+                "files": {
+                    "content": {
+                        "mimeType": "image/jpeg",
+                        "data": null,
+                        "jsonFileEmbeddedNoImage": false
+                    }
+                },
+                "resourceUrl": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                "dataType": "node"
+            },
+            "0296-1cf7c25b6434-2d2b47b681fa-1000": {
+                "id": "0296-1cf7c25b6434-2d2b47b681fa-1000",
+                "title": "Globe First Article",
+                "summary": "Sample story by cfg by code",
+                "sys": {
+                    "baseType": "article"
+                },
+                "pubInfo": {
+                    "publicationTime": "2025-02-03T09:27:20.080Z",
+                    "visible": true
+                },
+                "attributes": {},
+                "files": {
+                    "content": {
+                        "fileName": "Globe First Article.xml",
+                        "mimeType": "application/json",
+                        "updatedBy": {
+                            "userId": "bc44876e-4d2a-3181-893f-d2079e1b167e"
+                        },
+                        "updateTime": "2025-02-03T09:27:14.894Z",
+                        "size": 2687,
+                        "data": {
+                            "elements": [
+                                {
+                                    "nodeType": "story",
+                                    "attributes": {},
+                                    "elements": [
+                                        {
+                                            "nodeType": "web-image-group",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "XJ7vckqU",
+                                                        "softCrop": "Wide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "WcYdBxj3",
+                                                        "softCrop": "Square"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "DH97AWoE",
+                                                        "softCrop": "Portrait"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "9tBaY8hO",
+                                                        "softCrop": "Ultrawide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "web-image-caption",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "caption",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "my image sample"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "nodeType": "credit",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "pexels free to use"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "grouphead",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "overhead",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "p",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "plainText",
+                                                                    "value": "This story is an example"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "nodeType": "headline",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "p",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "plainText",
+                                                                    "value": "Globe First Article"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "summary",
+                                            "attributes": {
+                                                "id": "c2mgQxy7"
+                                            },
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "Sample story by cfg by code"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "byline",
+                                            "attributes": {
+                                                "id": "xBnyShVo"
+                                            },
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "text",
+                                            "attributes": {
+                                                "id": "Lmd5bTMp"
+                                            },
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "This is a generated story by configuration by code script for a convergent story written in the Convergent/News workfolder in issue date 2025-01-06"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nodeType": "teaser",
+                                    "attributes": {},
+                                    "elements": [
+                                        {
+                                            "nodeType": "web-image-group",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "j7VdU4lx",
+                                                        "softCrop": "Wide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "HJFP2IFd",
+                                                        "softCrop": "Square"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "5n5etsfT",
+                                                        "softCrop": "Portrait"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "dawChk4a",
+                                                        "softCrop": "Ultrawide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "web-image-caption",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "caption",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "my image sample"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "nodeType": "credit",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "pexels free to use"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "grouphead",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "headline",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "p",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "plainText",
+                                                                    "value": "Second Article"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "summary",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "Summary"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "attributes": {},
+                            "nodeType": "doc"
+                        },
+                        "jsonFileEmbeddedNoImage": true
+                    }
+                },
+                "links": {
+                    "hyperlink": {
+                        "image": [
+                            {
+                                "targetId": "0296-1cf7c24a7432-666dd5bf59a6-1000"
+                            }
+                        ]
+                    },
+                    "system": {
+                        "mainPicture": [
+                            {
+                                "targetId": "0296-1cf7c24a7432-666dd5bf59a6-1000",
+                                "metadata": {
+                                    "metadataType": "generic",
+                                    "softCrops": {
+                                        "Wide": {
+                                            "id": "j7VdU4lx"
+                                        },
+                                        "Portrait": {
+                                            "id": "5n5etsfT"
+                                        },
+                                        "Ultrawide": {
+                                            "id": "dawChk4a"
+                                        },
+                                        "Square": {
+                                            "id": "WcYdBxj3"
+                                        }
+                                    }
+                                },
+                                "dynamicCropsResourceUrls": {
+                                    "Square_thumb": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/thumb/news.webp",
+                                    "Wide_large": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/large/news.webp",
+                                    "Wide_thumb": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/thumb/news.webp",
+                                    "Ultrawide_thumb": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/thumb/news.webp",
+                                    "Square_small": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/small/news.webp",
+                                    "Wide_small": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/small/news.webp",
+                                    "Portrait_thumb": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/thumb/news.webp",
+                                    "Ultrawide_large": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/large/news.webp",
+                                    "Portrait_small": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/small/news.webp",
+                                    "Ultrawide_small": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/small/news.webp",
+                                    "Square_large": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/large/news.webp",
+                                    "Portrait_large": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/large/news.webp"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "url": "/news/0296-1cf7c25b6434-2d2b47b681fa-1000/index.html",
+                "resourceUrl": "/resources/0296-1cf7c25b6434-2d2b47b681fa-1000/globe_first_article.json",
+                "picture": "0296-1cf7c24a7432-666dd5bf59a6-1000",
+                "dataType": "node"
+            },
+            "0296-1cf7c277c316-50d53c872df6-1000": {
+                "id": "0296-1cf7c277c316-50d53c872df6-1000",
+                "title": "Third Article published on 2 sites",
+                "summary": "Sample story by cfg by code",
+                "sys": {
+                    "baseType": "article"
+                },
+                "pubInfo": {
+                    "publicationTime": "2025-02-03T09:27:34.485Z",
+                    "visible": true
+                },
+                "attributes": {},
+                "files": {
+                    "content": {
+                        "fileName": "Article published on 2 sites.xml",
+                        "mimeType": "application/json",
+                        "updatedBy": {
+                            "userId": "bc44876e-4d2a-3181-893f-d2079e1b167e"
+                        },
+                        "updateTime": "2025-02-03T09:27:31.775Z",
+                        "size": 2715,
+                        "data": {
+                            "elements": [
+                                {
+                                    "nodeType": "story",
+                                    "attributes": {},
+                                    "elements": [
+                                        {
+                                            "nodeType": "web-image-group",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "4YVg9xo7",
+                                                        "softCrop": "Wide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "adPIIBqf",
+                                                        "softCrop": "Square"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "kIPzNd1K",
+                                                        "softCrop": "Portrait"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "EmcCvlZL",
+                                                        "softCrop": "Ultrawide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "web-image-caption",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "caption",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "my image sample"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "nodeType": "credit",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "pexels free to use"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "grouphead",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "overhead",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "p",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "plainText",
+                                                                    "value": "This story is an example"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "nodeType": "headline",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "p",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "plainText",
+                                                                    "value": "Third Article published on 2 sites"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "summary",
+                                            "attributes": {
+                                                "id": "axy3Ayia"
+                                            },
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "Sample story by cfg by code"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "byline",
+                                            "attributes": {
+                                                "id": "8pTYKFPe"
+                                            },
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "Cfg Firm"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "text",
+                                            "attributes": {
+                                                "id": "dem80pkw"
+                                            },
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "This is a generated story by configuration by code script for a convergent story written in the Convergent/News workfolder in issue date 2025-01-06 to be published in two sites"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nodeType": "teaser",
+                                    "attributes": {},
+                                    "elements": [
+                                        {
+                                            "nodeType": "web-image-group",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "EjB3z8qe",
+                                                        "softCrop": "Wide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "9RAjQ6jn",
+                                                        "softCrop": "Square"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "2yMbSjzf",
+                                                        "softCrop": "Portrait"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+                                                        "id": "KkEAUiG4",
+                                                        "softCrop": "Ultrawide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "web-image-caption",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "caption",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "my image sample"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "nodeType": "credit",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "pexels free to use"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "grouphead",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "headline",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "p",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "plainText",
+                                                                    "value": "Second Article"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "summary",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "Summary"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "attributes": {},
+                            "nodeType": "doc"
+                        },
+                        "jsonFileEmbeddedNoImage": true
+                    }
+                },
+                "links": {
+                    "hyperlink": {
+                        "image": [
+                            {
+                                "targetId": "0296-1cf7c24a7432-666dd5bf59a6-1000"
+                            }
+                        ]
+                    },
+                    "system": {
+                        "mainPicture": [
+                            {
+                                "targetId": "0296-1cf7c24a7432-666dd5bf59a6-1000",
+                                "metadata": {
+                                    "metadataType": "generic",
+                                    "softCrops": {
+                                        "Ultrawide": {
+                                            "id": "EmcCvlZL"
+                                        },
+                                        "Square": {
+                                            "id": "9RAjQ6jn"
+                                        },
+                                        "Portrait": {
+                                            "id": "kIPzNd1K"
+                                        },
+                                        "Wide": {
+                                            "id": "EjB3z8qe"
+                                        }
+                                    }
+                                },
+                                "dynamicCropsResourceUrls": {
+                                    "Square_thumb": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/thumb/news.webp",
+                                    "Wide_large": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/large/news.webp",
+                                    "Ultrawide_thumb": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/thumb/news.webp",
+                                    "Wide_thumb": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/thumb/news.webp",
+                                    "Square_small": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/small/news.webp",
+                                    "Portrait_thumb": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/thumb/news.webp",
+                                    "Wide_small": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/small/news.webp",
+                                    "Ultrawide_large": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/large/news.webp",
+                                    "Portrait_small": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/small/news.webp",
+                                    "Ultrawide_small": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/small/news.webp",
+                                    "Square_large": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/large/news.webp",
+                                    "Portrait_large": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/format/large/news.webp"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "url": "/news/0296-1cf7c277c316-50d53c872df6-1000/index.html",
+                "resourceUrl": "/resources/0296-1cf7c277c316-50d53c872df6-1000/third_article_published_on_2_sites.json",
+                "picture": "0296-1cf7c24a7432-666dd5bf59a6-1000",
+                "dataType": "node"
+            },
+            "0296-1cf7c270e9b5-e4cbabcc881e-1000": {
+                "id": "0296-1cf7c270e9b5-e4cbabcc881e-1000",
+                "title": "Globe Second Article",
+                "summary": "Sample story by cfg by code",
+                "sys": {
+                    "baseType": "article"
+                },
+                "pubInfo": {
+                    "publicationTime": "2025-02-03T09:27:30.827Z",
+                    "visible": true
+                },
+                "attributes": {},
+                "files": {
+                    "content": {
+                        "fileName": "Globe Second Article.xml",
+                        "mimeType": "application/json",
+                        "updatedBy": {
+                            "userId": "bc44876e-4d2a-3181-893f-d2079e1b167e"
+                        },
+                        "updateTime": "2025-02-03T09:27:27.331Z",
+                        "size": 2772,
+                        "data": {
+                            "elements": [
+                                {
+                                    "nodeType": "story",
+                                    "attributes": {},
+                                    "elements": [
+                                        {
+                                            "nodeType": "web-image-group",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg",
+                                                        "id": "uhKMRRbC",
+                                                        "softCrop": "Wide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg",
+                                                        "id": "4A9RT9Uc",
+                                                        "softCrop": "Square"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg",
+                                                        "id": "hqwjkHjf",
+                                                        "softCrop": "Portrait"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg",
+                                                        "id": "sZPX18Xf",
+                                                        "softCrop": "Ultrawide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "web-image-caption",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "caption",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "my image sample"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "nodeType": "credit",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "pexels free to use"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "grouphead",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "overhead",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "p",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "plainText",
+                                                                    "value": "This story is an example"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "nodeType": "headline",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "p",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "plainText",
+                                                                    "value": "Globe Second Article"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "summary",
+                                            "attributes": {
+                                                "id": "u8kYShhe"
+                                            },
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "Sample story by cfg by code"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "byline",
+                                            "attributes": {
+                                                "id": "NuqjZqb3"
+                                            },
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "Cfg Firm"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "text",
+                                            "attributes": {
+                                                "id": "NnmtyBm5"
+                                            },
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "This is a generated story by configuration by code script for a convergent story written in the Convergent/Politics workfolder in issue date 2025-01-06"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nodeType": "teaser",
+                                    "attributes": {},
+                                    "elements": [
+                                        {
+                                            "nodeType": "web-image-group",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg",
+                                                        "id": "UtRROWs5",
+                                                        "softCrop": "Wide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg",
+                                                        "id": "eFQWmvsw",
+                                                        "softCrop": "Square"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg",
+                                                        "id": "l4oTnXvJ",
+                                                        "softCrop": "Portrait"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "image",
+                                                    "attributes": {
+                                                        "src": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg",
+                                                        "id": "O8PmKcLA",
+                                                        "softCrop": "Ultrawide"
+                                                    },
+                                                    "elements": []
+                                                },
+                                                {
+                                                    "nodeType": "web-image-caption",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "caption",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "my image sample"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "nodeType": "credit",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "p",
+                                                                    "attributes": {},
+                                                                    "elements": [
+                                                                        {
+                                                                            "nodeType": "plainText",
+                                                                            "value": "pexels free to use"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "grouphead",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "headline",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "p",
+                                                            "attributes": {},
+                                                            "elements": [
+                                                                {
+                                                                    "nodeType": "plainText",
+                                                                    "value": "Second Article"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "nodeType": "summary",
+                                            "attributes": {},
+                                            "elements": [
+                                                {
+                                                    "nodeType": "p",
+                                                    "attributes": {},
+                                                    "elements": [
+                                                        {
+                                                            "nodeType": "plainText",
+                                                            "value": "Summary"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "attributes": {},
+                            "nodeType": "doc"
+                        },
+                        "jsonFileEmbeddedNoImage": true
+                    }
+                },
+                "links": {
+                    "hyperlink": {
+                        "image": [
+                            {
+                                "targetId": "0296-1cf7c2685b9c-c86bdf7ebeb4-1000"
+                            }
+                        ]
+                    },
+                    "system": {
+                        "mainPicture": [
+                            {
+                                "targetId": "0296-1cf7c2685b9c-c86bdf7ebeb4-1000",
+                                "metadata": {
+                                    "metadataType": "generic",
+                                    "softCrops": {
+                                        "Ultrawide": {
+                                            "id": "sZPX18Xf"
+                                        },
+                                        "Square": {
+                                            "id": "4A9RT9Uc"
+                                        },
+                                        "Portrait": {
+                                            "id": "hqwjkHjf"
+                                        },
+                                        "Wide": {
+                                            "id": "uhKMRRbC"
+                                        }
+                                    }
+                                },
+                                "dynamicCropsResourceUrls": {
+                                    "Square_thumb": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/thumb/politics.webp",
+                                    "Wide_large": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/large/politics.webp",
+                                    "Ultrawide_thumb": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/thumb/politics.webp",
+                                    "Wide_thumb": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/thumb/politics.webp",
+                                    "Square_small": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/small/politics.webp",
+                                    "Portrait_thumb": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/thumb/politics.webp",
+                                    "Wide_small": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/small/politics.webp",
+                                    "Ultrawide_large": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/large/politics.webp",
+                                    "Portrait_small": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/small/politics.webp",
+                                    "Ultrawide_small": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/small/politics.webp",
+                                    "Square_large": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/large/politics.webp",
+                                    "Portrait_large": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/format/large/politics.webp"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "url": "/news/europe/0296-1cf7c270e9b5-e4cbabcc881e-1000/index.html",
+                "resourceUrl": "/resources/0296-1cf7c270e9b5-e4cbabcc881e-1000/globe_second_article.json",
+                "picture": "0296-1cf7c2685b9c-c86bdf7ebeb4-1000",
+                "dataType": "node"
+            },
+            "0296-1cf7c2685b9c-c86bdf7ebeb4-1000": {
+                "id": "0296-1cf7c2685b9c-c86bdf7ebeb4-1000",
+                "pubInfo": {
+                    "publicationTime": "2025-02-03T09:27:30.827Z",
+                    "visible": true
+                },
+                "attributes": {},
+                "files": {
+                    "content": {
+                        "mimeType": "image/jpeg",
+                        "data": null,
+                        "jsonFileEmbeddedNoImage": false
+                    }
+                },
+                "resourceUrl": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg",
+                "dataType": "node"
+            }
+        },
+        "defaultContent": false,
+        "lastModified": 1738661416563,
+        "etag": "0296-1cf7c2685b9c-c86bdf7ebeb4-1000-318504450827/1738661416563/-1358459953",
+        "contentLength": 0,
+        "children": [],
+        "errors": [],
+        "totalPages": 0,
+        "builder": "cfg:A213948F178D30DCF87904358A25606B:2025-02-04T09:35:44.795Z",
+        "buildDate": "2025-02-04T13:41:47.069Z",
+        "modelSourceClass": "com.eidosmedia.portal.impl.content.aggregation.ConfigBasedModelBuilder",
+        "invalidationPriority": 4,
+        "page": 1,
+        "aggregators": [],
+        "builtByConfigModelBuilder": true
+    },
+    "nodesUrls": {
+        "0296-1cf7c24a7432-666dd5bf59a6-1000": "/news/0296-1cf7c24a7432-666dd5bf59a6-1000/index.html",
+        "0296-1cf7c25b6434-2d2b47b681fa-1000": "/news/0296-1cf7c25b6434-2d2b47b681fa-1000/index.html",
+        "0296-1cf7c277c316-50d53c872df6-1000": "/news/0296-1cf7c277c316-50d53c872df6-1000/index.html",
+        "0296-1cf7c270e9b5-e4cbabcc881e-1000": "/news/europe/0296-1cf7c270e9b5-e4cbabcc881e-1000/index.html",
+        "0296-1cf7c2685b9c-c86bdf7ebeb4-1000": "/news/europe/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/index.html"
+    },
+    "resourcesUrls": {
+        "0296-1cf7c24a7432-666dd5bf59a6-1000": "/resources/0296-1cf7c24a7432-666dd5bf59a6-1000/news.jpeg",
+        "0296-1cf7c25b6434-2d2b47b681fa-1000": "/resources/0296-1cf7c25b6434-2d2b47b681fa-1000/globe_first_article.json",
+        "0296-1cf7c277c316-50d53c872df6-1000": "/resources/0296-1cf7c277c316-50d53c872df6-1000/third_article_published_on_2_sites.json",
+        "0296-1cf7c270e9b5-e4cbabcc881e-1000": "/resources/0296-1cf7c270e9b5-e4cbabcc881e-1000/globe_second_article.json",
+        "0296-1cf7c2685b9c-c86bdf7ebeb4-1000": "/resources/0296-1cf7c2685b9c-c86bdf7ebeb4-1000/politics.jpeg"
+    },
+    "siteNode": {
+        "nodeType": "siteRootNode",
+        "id": "4081-6ae2db5a299f-683d6269f078-2000",
+        "name": "TheGlobe",
+        "title": "TheGlobe",
+        "uri": "/",
+        "status": "ENABLED",
+        "commentsEnabled": false,
+        "listPageSize": 10,
+        "attributes": {},
+        "providersBlackList": [],
+        "hostname": "http://theglobe.neon.com:3000",
+        "type": "headless",
+        "path": "/",
+        "permalink": "/%section%/%id%/%view%",
+        "staticAttributes": {
+            "status": "ENABLED",
+            "categories": []
+        }
+    },
+    "siteData": {
+        "siteName": "TheGlobe",
+        "viewStatus": "LIVE",
+        "rootId": "4081-6ae2db5a299f-683d6269f078-2000",
+        "title": "TheGlobe",
+        "custom": {},
+        "categories": []
+    },
+    "configuration": {
+        "development": false,
+        "reactionsEnabled": true
+    },
+    "requestParams": {}
+}
