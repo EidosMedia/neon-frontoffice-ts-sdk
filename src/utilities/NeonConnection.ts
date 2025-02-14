@@ -95,12 +95,12 @@ export class NeonConnection {
         linkedObjects = pageData.model.data.links?.pagelink[zoneName].map(link => {
             const webPageBaseNode = pageData.model.nodes[link.targetId];
             
-            const mainPicureId = webPageBaseNode.links.system.mainPicture[0].targetId;
+            const mainPicureId = webPageBaseNode?.links?.system?.mainPicture[0].targetId;
             const mainPicuretNode = pageData.model.nodes[mainPicureId];
   
             const webpageNode: WebpageNodeModel = {
               ...webPageBaseNode,
-              mainPicture: mainPicuretNode.resourceUrl
+              mainPicture: mainPicuretNode?.resourceUrl
             };
             
             return webpageNode;
