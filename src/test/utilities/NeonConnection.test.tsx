@@ -89,5 +89,8 @@ describe("NeonConnection startup tests", () => {
     connection.getLiveSitesList = mockLiveSitesList as jest.MockedFunction<() => Promise<Site[]>>;
 
     await expect(connection.startup()).resolves.not.toThrow();
+
+    expect(mockBackendInfo).toHaveBeenCalledTimes(1);
+    expect(mockLiveSitesList).toHaveBeenCalledTimes(1);
   });
 });
