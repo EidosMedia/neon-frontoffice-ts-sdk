@@ -1,13 +1,20 @@
 import settings from '../commons/settings';
 import { loadSites } from '../services/sites';
 import { Site } from '../types/site';
-import { makeRequest } from '../utilities/http-client';
+import { makeRequest } from './http-client';
 import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
+import { VERSIONS } from "../conf/versions";
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
   neonFeUrl: string;
 };
+
+type BackendInfo = {
+  type: string;
+  version: string;
+  state: string;
+}
 
 export class NeonConnection {
   REVALIDATE_TIMEOUT = 3600;
@@ -94,15 +101,15 @@ export class NeonConnection {
     try {
         linkedObjects = pageData.model.data.links?.pagelink[zoneName].map(link => {
             const webPageBaseNode = pageData.model.nodes[link.targetId];
-            
+
             const mainPicureId = webPageBaseNode?.links?.system?.mainPicture[0].targetId;
             const mainPicuretNode = pageData.model.nodes[mainPicureId];
-  
+
             const webpageNode: WebpageNodeModel = {
               ...webPageBaseNode,
               mainPicture: mainPicuretNode?.resourceUrl
             };
-            
+
             return webpageNode;
         });
     } catch (e) {
@@ -111,4 +118,33 @@ export class NeonConnection {
 
     return linkedObjects;
   };
+
+  async getBackendInfo(): Promise<BackendInfo> {
+    try {
+      const response = await makeRequest('/api');
+      return response as BackendInfo;
+    } catch (error) {
+      console.error('Failed to fetch backend info:', error);
+      throw new Error('Error retrieving backend info');
+    }
+  };
+
+  async startup() {
+    const backendInfo = await this.getBackendInfo();
+    const backendVersion = backendInfo.version;
+
+    if (!VERSIONS.includes(backendVersion)) {
+      throw new Error(`Incompatible backend version: ${backendVersion}`);
+    }
+
+    console.log(`Backend version ${backendVersion} is compatible.`);
+
+    const sites = await this.getLiveSitesList();
+
+    if (!sites || sites.length === 0) {
+      throw new Error('Failed to retrieve sites data.');
+    }
+
+    console.log(`Successfully retrieved ${sites.length} sites.`);
+  }
 }
