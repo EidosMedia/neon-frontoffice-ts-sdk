@@ -3,7 +3,8 @@ import { loadSites } from '../services/sites';
 import { Site } from '../types/site';
 import { makeRequest } from './http-client';
 import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
-import { VERSIONS } from "../conf/versions";
+import { VERSIONS } from '../conf/versions';
+import { getCurrentUserInfo } from '../services/users';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
@@ -14,7 +15,7 @@ type BackendInfo = {
   type: string;
   version: string;
   state: string;
-}
+};
 
 export class NeonConnection {
   REVALIDATE_TIMEOUT = 3600;
@@ -25,6 +26,10 @@ export class NeonConnection {
   constructor({ frontOfficeServiceKey, neonFeUrl }: NeonConnectionParams) {
     settings.neonFeUrl = neonFeUrl;
     settings.frontOfficeServiceKey = frontOfficeServiceKey;
+  }
+
+  async getCurrentUserInfo(options) {
+    return await getCurrentUserInfo(options);
   }
 
   async getLiveSitesList() {
@@ -80,44 +85,63 @@ export class NeonConnection {
     return sites.find((site) => site.root.id === siteId);
   }
 
-  async previewAuthorization(contentId: string, siteName: string, viewStatus: string, previewToken: string) {
+  async previewAuthorization(
+    contentId: string,
+    siteName: string,
+    viewStatus: string,
+    previewToken: string
+  ) {
     const options = {
       headers: {
-          Authorization: 'Bearer ' + previewToken
-      }};
+        Authorization: 'Bearer ' + previewToken,
+      },
+    };
 
-    return await makeRequest(`/api/pages/${contentId}/authorization/${siteName}/${viewStatus}`, options);
+    return await makeRequest(
+      `/api/pages/${contentId}/authorization/${siteName}/${viewStatus}`,
+      options
+    );
   }
 
-  async getDwxLinkedObjects(pageData: PageData<WebpageModel>, zoneName?: string): Promise<WebpageNodeModel[]> {
+  async getDwxLinkedObjects(
+    pageData: PageData<WebpageModel>,
+    zoneName?: string
+  ): Promise<WebpageNodeModel[]> {
     const zones = Object.keys(pageData.model.data.links?.pagelink || []);
 
     let linkedObjects: WebpageNodeModel[] = [];
 
-    if (!zoneName || !zones.length || !pageData.model.data.links?.pagelink[zoneName]) {
+    if (
+      !zoneName ||
+      !zones.length ||
+      !pageData.model.data.links?.pagelink[zoneName]
+    ) {
       return linkedObjects;
     }
 
     try {
-        linkedObjects = pageData.model.data.links?.pagelink[zoneName].map(link => {
-            const webPageBaseNode = pageData.model.nodes[link.targetId];
+      linkedObjects = pageData.model.data.links?.pagelink[zoneName].map(
+        (link) => {
+          const webPageBaseNode = pageData.model.nodes[link.targetId];
 
-            const mainPicureId = webPageBaseNode?.links?.system?.mainPicture[0].targetId;
-            const mainPicuretNode = pageData.model.nodes[mainPicureId];
+          const mainPicureId =
+            webPageBaseNode?.links?.system?.mainPicture[0].targetId;
+          const mainPicuretNode = pageData.model.nodes[mainPicureId];
 
-            const webpageNode: WebpageNodeModel = {
-              ...webPageBaseNode,
-              mainPicture: mainPicuretNode?.resourceUrl
-            };
+          const webpageNode: WebpageNodeModel = {
+            ...webPageBaseNode,
+            mainPicture: mainPicuretNode?.resourceUrl,
+          };
 
-            return webpageNode;
-        });
+          return webpageNode;
+        }
+      );
     } catch (e) {
       throw new Error(`Error during retrieving Dwx linked objects: ${e}`);
     }
 
     return linkedObjects;
-  };
+  }
 
   async getBackendInfo(): Promise<BackendInfo> {
     try {
@@ -127,7 +151,7 @@ export class NeonConnection {
       console.error('Failed to fetch backend info:', error);
       throw new Error('Error retrieving backend info');
     }
-  };
+  }
 
   async startup() {
     const backendInfo = await this.getBackendInfo();
