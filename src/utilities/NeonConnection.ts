@@ -5,6 +5,7 @@ import { makeRequest } from './http-client';
 import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';
 import { getCurrentUserInfo } from '../services/users';
+import { User } from '../types/user';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
@@ -28,7 +29,7 @@ export class NeonConnection {
     settings.frontOfficeServiceKey = frontOfficeServiceKey;
   }
 
-  async getCurrentUserInfo(options) {
+  async getCurrentUserInfo(options): Promise<User> {
     return await getCurrentUserInfo(options);
   }
 
