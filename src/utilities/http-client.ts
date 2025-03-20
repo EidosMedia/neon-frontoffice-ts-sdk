@@ -1,9 +1,7 @@
 import settings from '../commons/settings';
 
 export async function makeRequest(url: string, params?: RequestInit) {
-  const requestUrl = url.startsWith('http')
-    ? url
-    : `${settings.neonFeUrl}${url}`;
+  const requestUrl = url.startsWith('http') ? url : `${settings.neonFeUrl}${url}`;
 
   const options = {
     method: params?.method || 'GET',
@@ -17,16 +15,20 @@ export async function makeRequest(url: string, params?: RequestInit) {
   const response = await fetch(new URL(requestUrl), options);
 
   if (!response.ok) {
-    throw new Error(
-      `HTTP error! status: ${response.status}, url: ${requestUrl}`
-    );
+    throw new Error(`HTTP error! status: ${response.status}, url: ${requestUrl}`);
   }
 
-  if(response.status === 204) {
+  if (response.status === 204) {
     return response;
   }
 
-  return await response.json();
+  const contentType = response.headers.get('content-type');
+
+  if (contentType && contentType.includes('application/json')) {
+    return await response.json();
+  }
+
+  return response;
 }
 
 export async function makePostRequest(url: string, params?: RequestInit) {

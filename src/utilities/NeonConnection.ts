@@ -4,8 +4,7 @@ import { Site } from '../types/site';
 import { makeRequest } from './http-client';
 import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';
-import { getCurrentUserInfo } from '../services/users';
-import { User } from '../types/user';
+import { getCurrentUserInfo, getUserAvatar } from '../services/users';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;

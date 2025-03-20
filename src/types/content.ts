@@ -60,8 +60,7 @@ export type PageData<GenericModel extends BaseModel> = {
   siteNode: SiteNode;
 };
 
-
-// =============== new 
+// =============== new
 
 interface Link {
   targetId: string;
@@ -108,7 +107,7 @@ interface PageLink {
 
 interface PageLinks {
   pagelink: PageLink;
-};
+}
 
 export type WebpageModel = {
   attributes: Record<string, unknown>;
@@ -120,3 +119,23 @@ export type WebpageModel = {
 export type WebpageNodeModel = {
   mainPicture?: string;
 } & BaseModel;
+
+export type VersionPubInfo = {
+  siteName: string;
+  status: string;
+  publicationTime: string;
+  canonical: string;
+  sectionPath: string;
+  visible: boolean;
+};
+
+export type NodeVersion = {
+  title: string;
+  type: string;
+  versionTimestamp: string;
+  versionDate: string;
+  nodeId: string;
+  major: number;
+  minor: number;
+  pubInfo: VersionPubInfo;
+};
