@@ -6,9 +6,12 @@ export async function getCurrentUserInfo({ headers }): Promise<User> {
     headers,
   });
 
+  console.log('neonUser', neonUser);
+
   const filteredUser: User = {
     name: neonUser.user.name,
-    avatarUrl: neonUser.user.avatarUrl,
+    id: neonUser.user.id,
+    alias: neonUser.user.alias,
   };
 
   return filteredUser;

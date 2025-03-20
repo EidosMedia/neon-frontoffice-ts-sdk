@@ -1,4 +1,6 @@
 export type User = {
   name: string;
-  avatarUrl: string;
+  avatarUrl?: string;
+  id: string;
+  alias: string;
 };
