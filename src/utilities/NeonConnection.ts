@@ -5,6 +5,7 @@ import { makeRequest } from './http-client';
 import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';
 import { getCurrentUserInfo, getUserAvatar } from '../services/users';
+import { User } from '../types/user';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
@@ -32,9 +33,15 @@ export class NeonConnection {
     return await getCurrentUserInfo(options);
   }
 
-  async getLiveSitesList() {
+  async getUserAvatar(options): Promise<Response> {
+    return await getUserAvatar(options);
+  }
+
+  async getSitesList() {
     if (this.sites.length === 0) {
-      await this.refreshLiveSites();
+      const liveSites = await this.refreshLiveSites();
+      const previewSites = await this.refreshPreviewSites();
+      this.sites = [...liveSites, ...previewSites];
     }
 
     return this.sites;
@@ -46,14 +53,6 @@ export class NeonConnection {
     return this.sites;
   }
 
-  async getPreviewSitesList() {
-    if (this.sites.length === 0) {
-      await this.refreshPreviewSites();
-    }
-
-    return this.sites;
-  }
-
   async refreshPreviewSites() {
     this.sites = await loadSites({ sitemap: true, viewStatus: 'preview' });
 
@@ -61,27 +60,34 @@ export class NeonConnection {
   }
 
   async resolveApiHostname(hostname: string) {
-    const sites = await this.getLiveSitesList();
+    const sites = await this.getSitesList();
 
     const siteFound = sites.find((site) => site.root.hostname === hostname);
 
     if (siteFound) {
+      if(siteFound.viewStatus === 'live') {
       return {
         apiHostname: siteFound.apiHostnames.liveHostname,
         viewStatus: 'LIVE',
       };
+    } else {
+      return {
+        apiHostname: siteFound.apiHostnames.previewHostname,
+        viewStatus: 'PREVIEW',
+      };
     }
+  }
     throw new Error(`Could not resolve hostname: ${hostname}`);
   }
 
   async getSiteByName(name: string) {
-    const sites = await this.getLiveSitesList();
+    const sites = await this.getSitesList();
 
     return sites.find((site) => site.root.name === name);
   }
 
   async getSiteBySiteId(siteId: string) {
-    const sites = await this.getLiveSitesList();
+    const sites = await this.getSitesList();
     return sites.find((site) => site.root.id === siteId);
   }
 
@@ -163,7 +169,7 @@ export class NeonConnection {
 
     console.log(`Backend version ${backendVersion} is compatible.`);
 
-    const sites = await this.getLiveSitesList();
+    const sites = await this.getSitesList();
 
     if (!sites || sites.length === 0) {
       throw new Error('Failed to retrieve sites data.');

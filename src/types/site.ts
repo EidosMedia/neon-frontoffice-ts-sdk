@@ -21,4 +21,5 @@ export type Site = {
   logoUrl: string;
   nodes: Record<string, SiteNode>;
   apiHostnames: SiteApiHostnames;
+  viewStatus: string;
 };

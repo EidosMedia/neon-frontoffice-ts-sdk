@@ -6,8 +6,6 @@ export async function getCurrentUserInfo({ headers }): Promise<User> {
     headers,
   });
 
-  console.log('neonUser', neonUser);
-
   const filteredUser: User = {
     name: neonUser.user.name,
     id: neonUser.user.id,

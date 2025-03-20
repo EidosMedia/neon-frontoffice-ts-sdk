@@ -1,6 +1,7 @@
 import settings from '../commons/settings';
 import { Site } from '../types/site';
 import { makeRequest } from '../utilities/http-client';
+import logger from '../utilities/logger';
 
 export async function loadSites({
   sitemap,
@@ -18,11 +19,21 @@ export async function loadSites({
   const sitesWithSitemap = await Promise.all(
     sites.map(async (site: Site) => ({
       ...site,
-      logoUrl: await getLogoUrl(site.root.id, site.apiHostnames.liveHostname),
+      logoUrl: await newFunction(site),
+      viewStatus: `${viewStatus}`
     }))
   );
 
   return sitesWithSitemap;
+
+  async function newFunction(site: Site) {
+    try{
+      return await getLogoUrl(site.root.id, viewStatus === 'live' ? site.apiHostnames.liveHostname : site.apiHostnames.previewHostname);
+    }catch(e){
+      logger.warn(`logo not found for site ${site.root.name}`);
+      return '';
+    }
+  }
 }
 
 export async function getLogoUrl(id: string, liveHostName: string) {
@@ -31,12 +42,7 @@ export async function getLogoUrl(id: string, liveHostName: string) {
 
   const logoUrl = `${envProtocol}//${requestUrl}`;
 
-  try {
-    const response = await makeRequest(logoUrl);
+  const response = await makeRequest(logoUrl);
 
-    return response.files?.logo.resourceUrl;
-  } catch (err) {
-    console.error('Error fetching logo URL: ', logoUrl, err);
-    return '';
-  }
+  return response.files?.logo.resourceUrl;
 }
