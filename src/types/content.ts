@@ -21,6 +21,7 @@ export type BaseModel = {
   sys: Record<string, string>;
   children: string[];
   cacheTTLSeconds: number;
+  changeVisibility?: string;
   files: {
     content: {
       mimeType?: string;
