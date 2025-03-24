@@ -4,7 +4,7 @@ import { Site } from '../types/site';
 import { makeRequest } from './http-client';
 import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';
-import { getCurrentUserInfo, getUserAvatar } from '../services/users';
+import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions } from '../services/users';
 import { User } from '../types/user';
 
 type NeonConnectionParams = {
@@ -29,11 +29,11 @@ export class NeonConnection {
     settings.frontOfficeServiceKey = frontOfficeServiceKey;
   }
 
-  async getCurrentUserInfo(options): Promise<User> {
+  async getCurrentUserInfo(options: GetCurrentUserInfoOptions): Promise<User> {
     return await getCurrentUserInfo(options);
   }
 
-  async getUserAvatar(options): Promise<Response> {
+  async getUserAvatar(options: GetUserAvatarOptions): Promise<Response> {
     return await getUserAvatar(options);
   }
 
@@ -62,86 +62,68 @@ export class NeonConnection {
   async resolveApiHostname(hostname: string) {
     const sites = await this.getSitesList();
 
-    const siteFound = sites.find((site) => site.root.hostname === hostname);
+    const siteFound = sites.find(site => site.root.hostname === hostname);
 
     if (siteFound) {
-      if(siteFound.viewStatus === 'live') {
-      return {
-        apiHostname: siteFound.apiHostnames.liveHostname,
-        viewStatus: 'LIVE',
-      };
-    } else {
-      return {
-        apiHostname: siteFound.apiHostnames.previewHostname,
-        viewStatus: 'PREVIEW',
-      };
+      if (siteFound.viewStatus === 'live') {
+        return {
+          apiHostname: siteFound.apiHostnames.liveHostname,
+          viewStatus: 'LIVE',
+        };
+      } else {
+        return {
+          apiHostname: siteFound.apiHostnames.previewHostname,
+          viewStatus: 'PREVIEW',
+        };
+      }
     }
-  }
     throw new Error(`Could not resolve hostname: ${hostname}`);
   }
 
   async getSiteByName(name: string) {
     const sites = await this.getSitesList();
 
-    return sites.find((site) => site.root.name === name);
+    return sites.find(site => site.root.name === name);
   }
 
   async getSiteBySiteId(siteId: string) {
     const sites = await this.getSitesList();
-    return sites.find((site) => site.root.id === siteId);
+    return sites.find(site => site.root.id === siteId);
   }
 
-  async previewAuthorization(
-    contentId: string,
-    siteName: string,
-    viewStatus: string,
-    previewToken: string
-  ) {
+  async previewAuthorization(contentId: string, siteName: string, viewStatus: string, previewToken: string) {
     const options = {
       headers: {
         Authorization: 'Bearer ' + previewToken,
       },
     };
 
-    return await makeRequest(
-      `/api/pages/${contentId}/authorization/${siteName}/${viewStatus}`,
-      options
-    );
+    return await makeRequest(`/api/pages/${contentId}/authorization/${siteName}/${viewStatus}`, options);
   }
 
-  async getDwxLinkedObjects(
-    pageData: PageData<WebpageModel>,
-    zoneName?: string
-  ): Promise<WebpageNodeModel[]> {
+  async getDwxLinkedObjects(pageData: PageData<WebpageModel>, zoneName?: string): Promise<WebpageNodeModel[]> {
     const zones = Object.keys(pageData.model.data.links?.pagelink || []);
 
     let linkedObjects: WebpageNodeModel[] = [];
 
-    if (
-      !zoneName ||
-      !zones.length ||
-      !pageData.model.data.links?.pagelink[zoneName]
-    ) {
+    if (!zoneName || !zones.length || !pageData.model.data.links?.pagelink[zoneName]) {
       return linkedObjects;
     }
 
     try {
-      linkedObjects = pageData.model.data.links?.pagelink[zoneName].map(
-        (link) => {
-          const webPageBaseNode = pageData.model.nodes[link.targetId];
+      linkedObjects = pageData.model.data.links?.pagelink[zoneName].map(link => {
+        const webPageBaseNode = pageData.model.nodes[link.targetId];
 
-          const mainPicureId =
-            webPageBaseNode?.links?.system?.mainPicture[0].targetId;
-          const mainPicuretNode = pageData.model.nodes[mainPicureId];
+        const mainPicureId = webPageBaseNode?.links?.system?.mainPicture[0].targetId;
+        const mainPicuretNode = pageData.model.nodes[mainPicureId];
 
-          const webpageNode: WebpageNodeModel = {
-            ...webPageBaseNode,
-            mainPicture: mainPicuretNode?.resourceUrl,
-          };
+        const webpageNode: WebpageNodeModel = {
+          ...webPageBaseNode,
+          mainPicture: mainPicuretNode?.resourceUrl,
+        };
 
-          return webpageNode;
-        }
-      );
+        return webpageNode;
+      });
     } catch (e) {
       throw new Error(`Error during retrieving Dwx linked objects: ${e}`);
     }

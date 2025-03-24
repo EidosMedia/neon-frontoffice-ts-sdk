@@ -19,6 +19,7 @@ export type SiteApiHostnames = {
 export type Site = {
   root: SiteNode;
   logoUrl: string;
+  siteName: string;
   nodes: Record<string, SiteNode>;
   apiHostnames: SiteApiHostnames;
   viewStatus: string;

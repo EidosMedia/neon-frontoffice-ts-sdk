@@ -19,6 +19,7 @@ export type BaseModel = {
   title: string;
   summary: string;
   sys: Record<string, string>;
+  children: string[];
   cacheTTLSeconds: number;
   files: {
     content: {
