@@ -140,4 +140,5 @@ export type NodeVersion = {
   major: number;
   minor: number;
   pubInfo: VersionPubInfo;
+  live: boolean;
 };

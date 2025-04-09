@@ -9,6 +9,14 @@ const connection = new NeonConnection({
   neonFeUrl: "yourNeonFeUrl",
 });
 
+jest.mock("../../conf/versions", () => ({
+  VERSIONS:  [
+    "NEON.2024.12.aaaaa-SNAPSHOT",
+    "NEON.2024.13.ea1-SNAPSHOT",
+    "NEON.2024.14.ea1-SNAPSHOT"
+  ]
+}));
+
 describe("NeonConnection test module.", () => {
   test("Get Dwp linked objects", async () => {
     const dwpModelPath = path.resolve(__dirname, "dwpModel.json");
@@ -43,7 +51,7 @@ describe("NeonConnection startup tests", () => {
   test("should throw error when sites list is empty", async () => {
     const mockBackendInfo =
         jest.fn().mockImplementation(() =>
-            ({version: "NEON.2024.12.ea1-SNAPSHOT", type: "SITE", state: "RUNNING"}));
+            ({version: "NEON.2024.12.aaaaa-SNAPSHOT", type: "SITE", state: "RUNNING"}));
 
     const mockLiveSitesList = jest.fn().mockImplementation(() => ([]));
 
@@ -53,7 +61,7 @@ describe("NeonConnection startup tests", () => {
       state: string
     }>>;
 
-    connection.getLiveSitesList = mockLiveSitesList as jest.MockedFunction<() => Promise<Site[]>>;
+    connection.getSitesList = mockLiveSitesList as jest.MockedFunction<() => Promise<Site[]>>;
 
     await expect(connection.startup()).rejects.toThrow("Failed to retrieve sites data.");
   });
@@ -75,7 +83,7 @@ describe("NeonConnection startup tests", () => {
 
     const mockBackendInfo =
         jest.fn().mockImplementation(() =>
-            ({version: "NEON.2024.12.ea1-SNAPSHOT", type: "SITE", state: "RUNNING"}));
+            ({version: "NEON.2024.12.aaaaa-SNAPSHOT", type: "SITE", state: "RUNNING"}));
 
     const mockLiveSitesList =
         jest.fn().mockImplementation(() => ([site]));
@@ -86,7 +94,7 @@ describe("NeonConnection startup tests", () => {
       state: string
     }>>;
 
-    connection.getLiveSitesList = mockLiveSitesList as jest.MockedFunction<() => Promise<Site[]>>;
+    connection.getSitesList = mockLiveSitesList as jest.MockedFunction<() => Promise<Site[]>>;
 
     await expect(connection.startup()).resolves.not.toThrow();
 
