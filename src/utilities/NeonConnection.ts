@@ -5,6 +5,7 @@ import { makeRequest } from './http-client';
 import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';
 import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions } from '../services/users';
+import { promoteContentLive, unpromoteContentLive, PromoteContentLiveOptions } from '../services/contentPromotion';
 import { User } from '../types/user';
 
 type NeonConnectionParams = {
@@ -35,6 +36,14 @@ export class NeonConnection {
 
   async getUserAvatar(options: GetUserAvatarOptions): Promise<Response> {
     return await getUserAvatar(options);
+  }
+
+  async promoteContentLive(options: PromoteContentLiveOptions): Promise<Response> {
+    return await promoteContentLive(options);
+  }
+
+  async unpromoteContentLive(options: PromoteContentLiveOptions): Promise<Response> {
+    return await unpromoteContentLive(options);
   }
 
   async getSitesList() {
