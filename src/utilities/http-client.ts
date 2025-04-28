@@ -15,7 +15,7 @@ export async function makeRequest(url: string, params?: RequestInit) {
   const response = await fetch(new URL(requestUrl), options);
 
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}, url: ${requestUrl}`);
+    throw new Error(`HTTP error! status: ${response.status}, url: ${requestUrl}`, { cause: response });
   }
 
   if (response.status === 204) {
