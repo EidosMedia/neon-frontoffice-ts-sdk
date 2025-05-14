@@ -45,7 +45,7 @@ export async function updateContentItem({
   baseUrl,
 }: UpdateContentItemOptions): Promise<Response> {
   const req = await makePostRequestXMLPayload(
-    `${baseUrl}/api/contents/story/${id}/contentitem/${contentItemId}?saveMode=MINOR_CHECKIN&keepCheckedout=true`,
+    `${baseUrl}/api/contents/story/${id}/contentitem/${contentItemId}?saveMode=MINOR_CHECKIN&keepCheckedout=false`,
     payload,
     {
       method: 'POST',
