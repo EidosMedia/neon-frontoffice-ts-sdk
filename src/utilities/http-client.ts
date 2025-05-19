@@ -10,6 +10,7 @@ export async function makeRequest(url: string, params?: RequestInit) {
       'neon-fo-access-key': settings.frontOfficeServiceKey,
       ...params?.headers,
     },
+    body: params?.body
   };
 
   const response = await fetch(new URL(requestUrl), options);
@@ -31,11 +32,22 @@ export async function makeRequest(url: string, params?: RequestInit) {
   return response;
 }
 
-export async function makePostRequest(url: string, params?: RequestInit) {
+export async function makePostRequest(url: string, payload: string, params?: RequestInit) {
   return await makeRequest(url, {
     method: 'POST',
-    body: JSON.stringify(params),
+    body: JSON.stringify(payload),
     ...params,
+  });
+}
+
+export async function makePostRequestXMLPayload(url: string, payload: string, params?: RequestInit) {  
+  return await makeRequest(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/xml',
+      ...params?.headers,
+    },
+    body: payload,
   });
 }
 
