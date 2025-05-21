@@ -22,6 +22,7 @@ export type BaseModel = {
   children: string[];
   cacheTTLSeconds: number;
   changeVisibility?: string;
+  attributes?: Record<string, any>;
   files: {
     content: {
       mimeType?: string;
@@ -142,3 +143,33 @@ export type NodeVersion = {
   pubInfo: VersionPubInfo;
   live: boolean;
 };
+
+export type Tag = {
+  name: string;
+  count: number;
+}
+
+export type AggregationResult = {
+  name: string;
+}
+
+export type SearchNodeData = {
+  nodeData: BaseModel;
+  highlights: Record<string, string[]>;
+};
+
+export type PaginatedSearchResult = {
+  count: number;
+  result: SearchNodeData[];
+  limit: number;
+  offset: number;
+
+  tags: Record<string, Tag[]>;
+  tookMs: number;
+  aggregations: Record<string, AggregationResult>;
+
+};
+
+export type PaginatedSearchRagResult = {
+  answer: String;
+} & PaginatedSearchResult;
