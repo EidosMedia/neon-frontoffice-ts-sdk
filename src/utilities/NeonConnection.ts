@@ -1,6 +1,6 @@
 import settings from '../commons/settings';
 import { loadSites } from '../services/sites';
-import { Site } from '../types/site';
+import { Site, SiteNode } from '../types/site';
 import { makeRequest } from './http-client';
 import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';
@@ -20,8 +20,9 @@ type BackendInfo = {
 };
 
 export class NeonConnection {
-  REVALIDATE_TIMEOUT = 3600;
+  RELOAD_ATTEMPT_TIME = 10000;
   sites: Site[] = [];
+  lastLoadSites: Date = new Date(1970,0,1,0,0,0,0);
   neonFeUrl = '';
   frontOfficeServiceKey = '';
 
@@ -55,6 +56,7 @@ export class NeonConnection {
       const liveSites = await this.refreshLiveSites();
       const previewSites = await this.refreshPreviewSites();
       this.sites = [...liveSites, ...previewSites];
+      this.lastLoadSites = new Date();
     }
 
     return this.sites;
@@ -72,7 +74,7 @@ export class NeonConnection {
     return this.sites;
   }
 
-  async resolveApiHostname(hostname: string) {
+  async resolveApiHostname(hostname: string) : Promise<{ apiHostname: string; viewStatus: string; root: SiteNode }> {
     const sites = await this.getSitesList();
 
     const siteFound = sites.find(site => site.root.hostname === hostname);
@@ -82,13 +84,26 @@ export class NeonConnection {
         return {
           apiHostname: siteFound.apiHostnames.liveHostname,
           viewStatus: 'LIVE',
+          root: siteFound.root,
         };
       } else {
         return {
           apiHostname: siteFound.apiHostnames.previewHostname,
           viewStatus: 'PREVIEW',
+          root: siteFound.root,
         };
       }
+    } else {
+       // could be that is a new site that is not in the list
+       if (this.lastLoadSites < new Date(Date.now() - this.RELOAD_ATTEMPT_TIME)) {
+          // reload the sites list if the last load was more than 10 seconds ago
+          console.log(`Reloading sites list... because hostname ${hostname} not found`);
+          const liveSites = await this.refreshLiveSites();
+          const previewSites = await this.refreshPreviewSites();
+          this.sites = [...liveSites, ...previewSites];
+          this.lastLoadSites = new Date();
+          return this.resolveApiHostname(hostname);
+       }
     }
     throw new Error(`Could not resolve hostname: ${hostname}`);
   }
