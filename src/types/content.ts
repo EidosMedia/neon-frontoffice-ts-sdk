@@ -173,3 +173,13 @@ export type PaginatedSearchResult = {
 export type PaginatedSearchRagResult = {
   answer: String;
 } & PaginatedSearchResult;
+
+export type RagOnItemsResponse = {
+  result: {
+    input: string;
+    answer: string;
+    context: any[];
+  }
+  status: string;
+  statusCode: number;
+}
