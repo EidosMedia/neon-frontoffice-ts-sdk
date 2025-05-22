@@ -8,6 +8,7 @@ export type SiteNode = {
   items: SiteNode[];
   hostname: string;
   previewHostname: string;
+  attributes?: Record<string, any>;
 };
 
 export type SiteApiHostnames = {
