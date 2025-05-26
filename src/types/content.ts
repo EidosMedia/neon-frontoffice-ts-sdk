@@ -32,6 +32,7 @@ export type BaseModel = {
   links: Links;
   resourceUrl: string;
   url: string;
+  pubInfo: any;
 };
 
 export type PageModel<GenericNodeModel> = {
@@ -147,11 +148,11 @@ export type NodeVersion = {
 export type Tag = {
   name: string;
   count: number;
-}
+};
 
 export type AggregationResult = {
   name: string;
-}
+};
 
 export type SearchNodeData = {
   nodeData: BaseModel;
@@ -167,7 +168,6 @@ export type PaginatedSearchResult = {
   tags: Record<string, Tag[]>;
   tookMs: number;
   aggregations: Record<string, AggregationResult>;
-
 };
 
 export type PaginatedSearchRagResult = {
@@ -179,7 +179,7 @@ export type RagOnItemsResponse = {
     input: string;
     answer: string;
     context: any[];
-  }
+  };
   status: string;
   statusCode: number;
-}
+};
