@@ -35,7 +35,7 @@ export async function makeRequest(url: string, params?: RequestInit) {
 export async function makePostRequest(url: string, payload: string, params?: RequestInit) {
   return await makeRequest(url, {
     method: 'POST',
-    body: JSON.stringify(payload),
+    body: payload,
     ...params,
   });
 }

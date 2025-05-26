@@ -2,11 +2,12 @@ import settings from '../commons/settings';
 import { loadSites } from '../services/sites';
 import { Site, SiteNode } from '../types/site';
 import { makeRequest } from './http-client';
-import { PageData, WebpageModel, WebpageNodeModel } from '../types/content';
+import { PageData, RagOnItemsResponse, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';
 import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions } from '../services/users';
 import { promoteContentLive, unpromoteContentLive, updateContentItem, PromoteContentLiveOptions, UpdateContentItemOptions } from '../services/contents';
 import { User } from '../types/user';
+import { askAboutContents, AskAboutContentsOptions } from '../services/augmented-search';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
@@ -49,6 +50,10 @@ export class NeonConnection {
 
   async updateContentItem(options: UpdateContentItemOptions): Promise<Response> {
     return await updateContentItem(options);
+  }
+
+  async askAboutContents(options: AskAboutContentsOptions): Promise<RagOnItemsResponse> {
+    return await askAboutContents(options);
   }
 
   async getSitesList() {
