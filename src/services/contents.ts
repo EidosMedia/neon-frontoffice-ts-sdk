@@ -1,3 +1,4 @@
+import settings from '../commons/settings';
 import { makeRequest, makePostRequestXMLPayload } from '../utilities/http-client';
 
 export type PromoteContentLiveOptions = {
@@ -5,7 +6,7 @@ export type PromoteContentLiveOptions = {
   headers: {
     Authorization: string;
   };
-  baseUrl: string;
+  sites: string;
 };
 
 export type UpdateContentItemOptions = {
@@ -14,13 +15,13 @@ export type UpdateContentItemOptions = {
   payload: string;
   headers: {
     Authorization: string;
-    'update-context-id': string;
+    'update-context-id'?: string;
   };
   baseUrl: string;
 };
 
-export async function promoteContentLive({ id, headers, baseUrl }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeRequest(`${baseUrl}/api/contents/nodes/${id}/promote/live`, {
+export async function promoteContentLive({ id, headers, sites }: PromoteContentLiveOptions): Promise<Response> {
+  const req = await makeRequest(`${settings.neonFeUrl}/api/contents/nodes/${id}/promote/live=${sites}`, {
     method: 'POST',
     headers,
   });
@@ -28,8 +29,8 @@ export async function promoteContentLive({ id, headers, baseUrl }: PromoteConten
   return req;
 }
 
-export async function unpromoteContentLive({ id, headers, baseUrl }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeRequest(`${baseUrl}/api/contents/nodes/${id}/promote/live`, {
+export async function unpromoteContentLive({ id, headers, sites }: PromoteContentLiveOptions): Promise<Response> {
+  const req = await makeRequest(`${settings.neonFeUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`, {
     method: 'DELETE',
     headers,
   });
