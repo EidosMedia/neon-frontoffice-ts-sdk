@@ -136,13 +136,16 @@ export type VersionPubInfo = {
 export type NodeVersion = {
   title: string;
   type: string;
-  versionTimestamp: string;
+  versionTimestamp: number;
   versionDate: string;
   nodeId: string;
   major: number;
   minor: number;
   pubInfo: VersionPubInfo;
   live: boolean;
+  prevTsVersion: number;
+  sourceVersionName?: String;
+  workflowStatus?: string;
 };
 
 export type Tag = {

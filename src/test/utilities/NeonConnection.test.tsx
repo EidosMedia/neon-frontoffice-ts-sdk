@@ -5,8 +5,8 @@ import path from "path";
 import { Site } from "../../types/site";
 
 const connection = new NeonConnection({
-  frontOfficeServiceKey: "yourServiceKey",
-  neonFeUrl: "yourNeonFeUrl",
+  frontOfficeServiceKey: 'yourServiceKey',
+  neonFoUrl: 'yourNeonFoUrl',
 });
 
 jest.mock("../../conf/versions", () => ({

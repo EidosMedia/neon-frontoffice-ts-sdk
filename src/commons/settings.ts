@@ -5,13 +5,13 @@
  */
 
 export interface ISettings {
-  neonFeUrl: string;
+  neonFoUrl: string;
   frontOfficeServiceKey: string;
 }
 
 // Default settings
 const settings: ISettings = {
-  neonFeUrl: '',
+  neonFoUrl: '',
   frontOfficeServiceKey: '',
 };
 

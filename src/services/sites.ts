@@ -38,7 +38,7 @@ export async function loadSites({
 
 export async function getLogoUrl(id: string, liveHostName: string) {
   const requestUrl = `${liveHostName}/api/nodes/${id}`;
-  const envProtocol = new URL(settings.neonFeUrl).protocol;
+  const envProtocol = new URL(settings.neonFoUrl).protocol;
 
   const logoUrl = `${envProtocol}//${requestUrl}`;
 

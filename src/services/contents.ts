@@ -19,10 +19,60 @@ export type UpdateContentItemOptions = {
   baseUrl: string;
 };
 
+export type RollbackVersionOptions = {
+  version: string;
+  rollbackLinks: boolean;
+  rollbackMetadata: boolean;
+  headers: {
+    Authorization: string;
+    'update-context-id': string;
+    'Content-Type': string;
+  };
+};
+
 export async function promoteContentLive({ id, headers, baseUrl }: PromoteContentLiveOptions): Promise<Response> {
   const req = await makeRequest(`${baseUrl}/api/contents/nodes/${id}/promote/live`, {
     method: 'POST',
     headers,
+  });
+
+  return req;
+}
+
+export async function rollbackVersion(neonFoUrl: string,  { version, rollbackLinks, rollbackMetadata, headers }: RollbackVersionOptions): Promise<Response> {
+  /*
+
+    private final NodeRef versionToRollback;
+
+    private boolean rollbackSystemAttributes = true;
+    private boolean rollbackAttributes = true;
+    private boolean rollbackLinks = true;
+
+    private NodeRetrieveOptions options;
+
+  */
+  
+  const payload = {
+    versionToRollback: version,
+    rollbackLinks : rollbackLinks,
+    rollbackAttributes: rollbackMetadata,
+    rollbackSystemAttributes: true, // Assuming we want to rollback system attributes by default
+    options: {  
+        showPath: false,
+        showXml: false,
+        showSystemAttributes: false,
+        showAttributes: false,
+        showLinkedContents: false,
+        includeDiscarded: false,
+        showLoadPublishInfo: false,
+        resolveContainer: false,
+    }
+  };
+  
+  const req = await makeRequest(`${neonFoUrl}/api/contents/nodes/rollback`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload),
   });
 
   return req;
