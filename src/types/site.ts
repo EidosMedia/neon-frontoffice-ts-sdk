@@ -20,8 +20,25 @@ export type SiteApiHostnames = {
 export type Site = {
   root: SiteNode;
   logoUrl: string;
+  menus: Menu[];
   siteName: string;
   nodes: Record<string, SiteNode>;
   apiHostnames: SiteApiHostnames;
   viewStatus: string;
+};
+
+export type MenuItem = {
+  label: string;
+  ref?: string;
+  url?: string;
+  type: string;
+  items: MenuItem[];
+};
+
+export type Menu = {
+  name: string;
+  description: string;
+  items: MenuItem[];
+  creationDate: string;
+  modificationDate: string;
 };

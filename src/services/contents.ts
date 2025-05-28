@@ -4,7 +4,7 @@ import { makeRequest, makePostRequestXMLPayload } from '../utilities/http-client
 export type PromoteContentLiveOptions = {
   id: string;
   headers: {
-    Authorization: string;
+    Authorization?: string;
   };
   sites: string;
 };
@@ -14,8 +14,8 @@ export type UpdateContentItemOptions = {
   contentItemId: string;
   payload: string;
   headers: {
-    Authorization: string;
-    'update-context-id'?: string;
+    Authorization?: string;
+    'update-context-id': string;
   };
   baseUrl: string;
 };
