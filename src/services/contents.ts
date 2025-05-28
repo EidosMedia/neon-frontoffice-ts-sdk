@@ -15,7 +15,7 @@ export type UpdateContentItemOptions = {
   payload: string;
   headers: {
     Authorization?: string;
-    'update-context-id': string;
+    'update-context-id'?: string;
   };
   baseUrl: string;
 };

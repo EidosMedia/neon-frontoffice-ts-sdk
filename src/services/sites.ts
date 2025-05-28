@@ -48,7 +48,10 @@ export async function loadSites({
       if (menus && typeof menus === 'object') {
         // Log all keys and their values
         Object.keys(menus).forEach(key => {
-          logMenuItems(menus[key].items);
+          const menuValue = menus[key as keyof typeof menus];
+          if (Array.isArray(menuValue)) {
+            logMenuItems(menuValue);
+          }
         });
       }
 

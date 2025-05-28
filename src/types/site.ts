@@ -4,6 +4,7 @@ export type SiteNode = {
   nodeType: string;
   title: string;
   uri: string;
+  url: string;
   path: string;
   items: SiteNode[];
   hostname: string;
@@ -20,7 +21,7 @@ export type SiteApiHostnames = {
 export type Site = {
   root: SiteNode;
   logoUrl: string;
-  menus: Menu[];
+  menus: Record<string, Menu>;
   siteName: string;
   nodes: Record<string, SiteNode>;
   apiHostnames: SiteApiHostnames;
