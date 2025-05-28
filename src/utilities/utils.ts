@@ -1,1 +1,1 @@
-export const isNeonAppPreview = () => window.name === 'neonapp-preview';
+export const isNeonAppPreview = () => window ? window.name === 'neonapp-preview' : false;

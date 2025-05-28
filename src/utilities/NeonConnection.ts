@@ -1,6 +1,6 @@
 import settings from '../commons/settings';
 import { loadSites } from '../services/sites';
-import { Site, SiteNode } from '../types/site';
+import { Site, SiteNode, Menu } from '../types/site';
 import { makeRequest } from './http-client';
 import { PageData, RagOnItemsResponse, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';

@@ -1,11 +1,12 @@
+import settings from '../commons/settings';
 import { makeRequest, makePostRequestXMLPayload } from '../utilities/http-client';
 
 export type PromoteContentLiveOptions = {
   id: string;
   headers: {
-    Authorization: string;
+    Authorization?: string;
   };
-  baseUrl: string;
+  sites: string;
 };
 
 export type UpdateContentItemOptions = {
@@ -13,8 +14,8 @@ export type UpdateContentItemOptions = {
   contentItemId: string;
   payload: string;
   headers: {
-    Authorization: string;
-    'update-context-id': string;
+    Authorization?: string;
+    'update-context-id'?: string;
   };
   baseUrl: string;
 };
@@ -30,8 +31,8 @@ export type RollbackVersionOptions = {
   };
 };
 
-export async function promoteContentLive({ id, headers, baseUrl }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeRequest(`${baseUrl}/api/contents/nodes/${id}/promote/live`, {
+export async function promoteContentLive({ id, headers, sites }: PromoteContentLiveOptions): Promise<Response> {
+  const req = await makeRequest(`${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live=${sites}`, {
     method: 'POST',
     headers,
   });
@@ -78,8 +79,9 @@ export async function rollbackVersion(neonFoUrl: string,  { version, rollbackLin
   return req;
 }
 
-export async function unpromoteContentLive({ id, headers, baseUrl }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeRequest(`${baseUrl}/api/contents/nodes/${id}/promote/live`, {
+
+export async function unpromoteContentLive({ id, headers, sites }: PromoteContentLiveOptions): Promise<Response> {
+  const req = await makeRequest(`${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`, {
     method: 'DELETE',
     headers,
   });
