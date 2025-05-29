@@ -32,7 +32,7 @@ export type RollbackVersionOptions = {
 };
 
 export async function promoteContentLive({ id, headers, sites }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeRequest(`${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live=${sites}`, {
+  const req = await makeRequest(`${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`, {
     method: 'POST',
     headers,
   });
