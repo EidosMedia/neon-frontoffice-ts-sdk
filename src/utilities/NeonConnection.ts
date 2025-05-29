@@ -5,13 +5,13 @@ import { makeRequest } from './http-client';
 import { PageData, RagOnItemsResponse, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';
 import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions } from '../services/users';
-import { promoteContentLive, unpromoteContentLive, updateContentItem, PromoteContentLiveOptions, UpdateContentItemOptions } from '../services/contents';
+import { promoteContentLive, unpromoteContentLive, updateContentItem, PromoteContentLiveOptions, UpdateContentItemOptions, rollbackVersion, RollbackVersionOptions} from '../services/contents';
 import { User } from '../types/user';
 import { askAboutContents, AskAboutContentsOptions } from '../services/augmented-search';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
-  neonFeUrl: string;
+  neonFoUrl: string;
 };
 
 type BackendInfo = {
@@ -24,11 +24,10 @@ export class NeonConnection {
   RELOAD_ATTEMPT_TIME = 10000;
   sites: Site[] = [];
   lastLoadSites: Date = new Date(1970,0,1,0,0,0,0);
-  neonFeUrl = '';
   frontOfficeServiceKey = '';
 
-  constructor({ frontOfficeServiceKey, neonFeUrl }: NeonConnectionParams) {
-    settings.neonFeUrl = neonFeUrl;
+  constructor({ frontOfficeServiceKey, neonFoUrl }: NeonConnectionParams) {
+    settings.neonFoUrl = neonFoUrl;
     settings.frontOfficeServiceKey = frontOfficeServiceKey;
   }
 
@@ -54,6 +53,11 @@ export class NeonConnection {
 
   async askAboutContents(options: AskAboutContentsOptions): Promise<RagOnItemsResponse> {
     return await askAboutContents(options);
+  }
+
+  async rollbackVersion(options: RollbackVersionOptions): Promise<Response> {
+    console.log('rollbackVersion called with', options)
+    return await rollbackVersion(settings.neonFoUrl, options);
   }
 
   async getSitesList() {

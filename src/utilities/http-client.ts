@@ -1,7 +1,7 @@
 import settings from '../commons/settings';
 
 export async function makeRequest(url: string, params?: RequestInit) {
-  const requestUrl = url.startsWith('http') ? url : `${settings.neonFeUrl}${url}`;
+  const requestUrl = url.startsWith('http') ? url : `${settings.neonFoUrl}${url}`;
 
   const options = {
     method: params?.method || 'GET',
