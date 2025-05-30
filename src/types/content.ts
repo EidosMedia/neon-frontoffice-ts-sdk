@@ -131,6 +131,10 @@ export type VersionPubInfo = {
   canonical: string;
   sectionPath: string;
   visible: boolean;
+  publishedBy: {
+    userName: string;
+    userId: string;
+  };
 };
 
 export type NodeVersion = {
