@@ -33,6 +33,7 @@ export type BaseModel = {
   resourceUrl: string;
   url: string;
   pubInfo: any;
+  version?: string;
 };
 
 export type PageModel<GenericNodeModel> = {
@@ -52,7 +53,6 @@ export type PageModel<GenericNodeModel> = {
   nodes: Record<string, BaseModel>;
   page: number;
   totalPages: number;
-  version?: string;
 } & BaseModel;
 
 export type PageData<GenericModel extends BaseModel> = {
