@@ -46,14 +46,11 @@ export async function loadSites({
           site.apiHostnames.liveHostname
       );
 
-      // Try to find possible keys containing menu items
+            // Try to find possible keys containing menu items
       if (menus && typeof menus === 'object') {
         // Log all keys and their values
         Object.keys(menus).forEach(key => {
-          const menuValue = menus[key as keyof typeof menus];
-          if (Array.isArray(menuValue)) {
-            logMenuItems(menuValue);
-          }
+          logMenuItems(menus[key].items);
         });
       }
 
@@ -77,6 +74,7 @@ export async function loadSites({
       }
 
       return menus;
+
     }catch(e){
       logger.warn(`menu not found for site ${site.root.name} error: ${e}`);
       return '';
@@ -103,7 +101,8 @@ export async function getMenu(liveHostName: string) : Promise<Menu> {
 
   const menuUrl = `${envProtocol}//${requestUrl}`;
 
-  const response = await fetch(menuUrl);
-  return response.json();
+  const response = await makeRequest(menuUrl);
+
+  return response;
 }
 

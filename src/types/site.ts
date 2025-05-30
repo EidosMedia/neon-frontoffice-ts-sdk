@@ -37,6 +37,7 @@ export type MenuItem = {
 };
 
 export type Menu = {
+  [key: string]: any;
   name: string;
   description: string;
   items: MenuItem[];
