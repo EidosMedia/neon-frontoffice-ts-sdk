@@ -19,29 +19,31 @@ export async function loadSites({
   const sitesWithSitemap = await Promise.all(
     sites.map(async (site: Site) => ({
       ...site,
-      logoUrl: await newFunction(site),
+      logoUrl: await fetchLiveLogoUrl(site),
       viewStatus: `${viewStatus}`,
-      menus: await newFunction2(site)
+      menus: await fetchLiveMenus(site)
     }))
   );
 
   return sitesWithSitemap;
 
-  async function newFunction(site: Site) {
+  async function fetchLiveLogoUrl(site: Site) {
     try{
-      return await getLogoUrl(site.root.id, viewStatus === 'live' ? site.apiHostnames.liveHostname : site.apiHostnames.previewHostname);
-    }catch(e){
-      logger.warn(`logo not found for site ${site.root.name}`);
+      // i cannot load the preview logo because is not accessible without auth
+      // so manage the to ask logoUrl only for live sites also for preview 
+      return await getLogoUrl(site.root.id, site.apiHostnames.liveHostname);
+    } catch(e){
+      logger.warn(`logo not found for site ${site.root.name}, view status site.viewStatus: ${viewStatus} error: ${e}`);
       return '';
     }
   }
 
-  async function newFunction2(site: Site) {
+  async function fetchLiveMenus(site: Site) {
     try{
+            // i cannot load the preview logo because is not accessible without auth
+      // so manage the to ask getMenu only for live sites also for preview 
       const menus = await getMenu(
-        viewStatus === 'live'
-          ? site.apiHostnames.liveHostname
-          : site.apiHostnames.previewHostname
+          site.apiHostnames.liveHostname
       );
 
       // Try to find possible keys containing menu items
@@ -88,6 +90,8 @@ export async function getLogoUrl(id: string, liveHostName: string) {
 
   const logoUrl = `${envProtocol}//${requestUrl}`;
 
+  console.log(logoUrl);
+  
   const response = await makeRequest(logoUrl);
 
   return response.files?.logo.resourceUrl;
