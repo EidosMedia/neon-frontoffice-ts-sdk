@@ -153,6 +153,13 @@ export type NodeVersion = {
   workflowStatus?: string;
 };
 
+export type NodeHistory = {
+  id: string;
+  version: string;
+  acquireTimestamp: number;
+  versions: NodeVersion[];
+}
+
 export type Tag = {
   name: string;
   count: number;
