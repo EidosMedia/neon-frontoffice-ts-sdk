@@ -158,6 +158,9 @@ export type NodeHistory = {
   version: string;
   acquireTimestamp: number;
   versions: NodeVersion[];
+  viewStatus: string;
+  latestLiveVersion: string
+  latestEditableVersion: string;
 }
 
 export type Tag = {
