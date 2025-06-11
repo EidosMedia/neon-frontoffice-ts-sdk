@@ -1,14 +1,12 @@
-import { makeRequest } from '../utilities/http-client';
+import { makeAuthenticatedRequest, makeRequest } from '../utilities/http-client';
 import { User } from '../types/user';
+import { AuthenticatedRequestOptions } from '../types/base';
 
-export type GetCurrentUserInfoOptions = {
-  headers: Record<string, string>;
-};
+export type GetCurrentUserInfoOptions = {} & AuthenticatedRequestOptions;
 
 export type GetUserAvatarOptions = {
-  headers: Record<string, string>;
   id: string;
-};
+} & AuthenticatedRequestOptions;
 
 export async function getCurrentUserInfo({ headers }: GetCurrentUserInfoOptions): Promise<User> {
   const neonUser = await makeRequest(`/directory/sessions/whoami`, {
@@ -24,8 +22,8 @@ export async function getCurrentUserInfo({ headers }: GetCurrentUserInfoOptions)
   return filteredUser;
 }
 
-export async function getUserAvatar({ headers, id }: GetUserAvatarOptions): Promise<Response> {
-  const user = await makeRequest(`/directory/users/picture?id=${id}`, {
+export async function getUserAvatar({ headers, id, editorialAuth }: GetUserAvatarOptions): Promise<Response> {
+  const user = await makeAuthenticatedRequest(`/directory/users/picture?id=${id}`, editorialAuth || '', {
     headers,
   });
 

@@ -34,3 +34,14 @@ export type PageNode = {
   picture: string;
   dataType: string;
 };
+
+export interface ErrorObject {
+  cause: unknown;
+  status: number;
+  url: string;
+}
+
+export interface AuthenticatedRequestOptions {
+  headers?: Record<string, string>;
+  editorialAuth?: string;
+}

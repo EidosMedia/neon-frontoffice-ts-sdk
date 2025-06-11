@@ -1,4 +1,6 @@
+import { XMLValidator } from 'fast-xml-parser';
 import settings from '../commons/settings';
+import { ErrorObject } from '../types/base';
 
 export async function makeRequest(url: string, params?: RequestInit) {
   const requestUrl = url.startsWith('http') ? url : `${settings.neonFoUrl}${url}`;
@@ -10,13 +12,26 @@ export async function makeRequest(url: string, params?: RequestInit) {
       'neon-fo-access-key': settings.frontOfficeServiceKey,
       ...params?.headers,
     },
-    body: params?.body
+    body: params?.body,
   };
 
   const response = await fetch(new URL(requestUrl), options);
 
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}, url: ${requestUrl}`, { cause: response });
+    try {
+      const jsonResp = await response.json();
+      throw {
+        cause: jsonResp,
+        status: response.status,
+        url: requestUrl,
+      } as ErrorObject;
+    } catch {
+      throw {
+        cause: { message: 'Failed to parse error response' },
+        status: response.status,
+        url: requestUrl,
+      } as ErrorObject;
+    }
   }
 
   if (response.status === 204) {
@@ -32,6 +47,19 @@ export async function makeRequest(url: string, params?: RequestInit) {
   return response;
 }
 
+export async function makeAuthenticatedRequest(url: string, editorialAuth: string, params?: RequestInit) {
+  const authHeaders = {
+    Authorization: `Bearer ${editorialAuth}`,
+    'neon-fo-access-key': settings.frontOfficeServiceKey,
+    ...params?.headers,
+  };
+
+  return await makeRequest(url, {
+    ...params,
+    headers: authHeaders,
+  });
+}
+
 export async function makePostRequest(url: string, payload: string, params?: RequestInit) {
   return await makeRequest(url, {
     method: 'POST',
@@ -40,11 +68,57 @@ export async function makePostRequest(url: string, payload: string, params?: Req
   });
 }
 
-export async function makePostRequestXMLPayload(url: string, payload: string, params?: RequestInit) {  
+export async function makePostRequestXMLPayload(url: string, payload: string, params?: RequestInit) {
+  // check XML validity
+  const isValid = XMLValidator.validate(payload, {
+    allowBooleanAttributes: true,
+  });
+
+  if (isValid !== true) {
+    throw {
+      cause: { message: 'Invalid XML provided' },
+      status: 400,
+      url,
+    } as ErrorObject;
+  }
+
   return await makeRequest(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/xml',
+      ...params?.headers,
+    },
+    body: payload,
+  });
+}
+
+export async function makeAuthenticatedPostRequestXMLPayload(
+  url: string,
+  payload: string,
+  editorialAuth: string,
+  contextId: string,
+  params?: RequestInit
+) {
+  // check XML validity
+  const isValid = XMLValidator.validate(payload, {
+    allowBooleanAttributes: true,
+  });
+
+  if (isValid !== true) {
+    throw {
+      cause: { message: 'Invalid XML provided' },
+      status: 400,
+      url,
+    } as ErrorObject;
+  }
+
+  return await makeRequest(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/xml',
+      Authorization: `Bearer ${editorialAuth}`,
+      'neon-fo-access-key': settings.frontOfficeServiceKey,
+      'update-context-id': contextId,
       ...params?.headers,
     },
     body: payload,
