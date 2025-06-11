@@ -41,7 +41,11 @@ export interface ErrorObject {
   url: string;
 }
 
-export interface AuthenticatedRequestOptions {
-  headers?: Record<string, string>;
+export interface AuthTokens {
   editorialAuth?: string;
+  webAuth?: string;
+}
+
+export interface AuthenticatedRequestOptions {
+  auth: AuthTokens;
 }

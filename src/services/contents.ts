@@ -1,45 +1,45 @@
 import settings from '../commons/settings';
-import { makeRequest, makeAuthenticatedPostRequestXMLPayload } from '../utilities/http-client';
+import { AuthenticatedRequestOptions } from '../types/base';
+import {
+  makeRequest,
+  makeAuthenticatedPostRequestXMLPayload,
+  makeAuthenticatedRequest,
+} from '../utilities/http-client';
 
 export type PromoteContentLiveOptions = {
   id: string;
-  headers: {
-    Authorization?: string;
-  };
+
   sites: string;
-};
+} & AuthenticatedRequestOptions;
 
 export type UpdateContentItemOptions = {
   id: string;
   contentItemId: string;
   payload: string;
   contextId: string;
-  editorialToken: string;
-};
+} & AuthenticatedRequestOptions;
 
 export type RollbackVersionOptions = {
   version: string;
   rollbackLinks: boolean;
   rollbackMetadata: boolean;
-  headers: {
-    Authorization: string;
-    'update-context-id': string;
-    'Content-Type': string;
-  };
-};
+} & AuthenticatedRequestOptions;
 
-export async function promoteContentLive({ id, headers, sites }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeRequest(`${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`, {
-    method: 'POST',
-    headers,
-  });
+export async function promoteContentLive({ id, auth, sites }: PromoteContentLiveOptions): Promise<Response> {
+  const req = await makeAuthenticatedRequest(
+    `${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`,
+    auth,
+    {
+      method: 'POST',
+    }
+  );
 
   return req;
 }
 
 export async function rollbackVersion(
   neonFoUrl: string,
-  { version, rollbackLinks, rollbackMetadata, headers }: RollbackVersionOptions
+  { version, rollbackLinks, rollbackMetadata, auth }: RollbackVersionOptions
 ): Promise<Response> {
   const payload = {
     versionToRollback: version,
@@ -58,20 +58,22 @@ export async function rollbackVersion(
     },
   };
 
-  const req = await makeRequest(`${neonFoUrl}/api/contents/nodes/rollback`, {
+  const req = await makeAuthenticatedRequest(`${neonFoUrl}/api/contents/nodes/rollback`, auth, {
     method: 'POST',
-    headers,
     body: JSON.stringify(payload),
   });
 
   return req;
 }
 
-export async function unpromoteContentLive({ id, headers, sites }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeRequest(`${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`, {
-    method: 'DELETE',
-    headers,
-  });
+export async function unpromoteContentLive({ id, auth, sites }: PromoteContentLiveOptions): Promise<Response> {
+  const req = await makeAuthenticatedRequest(
+    `${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`,
+    auth,
+    {
+      method: 'DELETE',
+    }
+  );
 
   return req;
 }
@@ -80,15 +82,14 @@ export async function updateContentItem({
   id,
   contentItemId,
   payload,
-  // headers,
   contextId,
-  editorialToken,
+  auth,
 }: UpdateContentItemOptions): Promise<Response> {
   const req = await makeAuthenticatedPostRequestXMLPayload(
     `${settings.neonFoUrl}/api/contents/story/${id}/contentitem/${contentItemId}?saveMode=MINOR_CHECKIN&keepCheckedout=false`,
-    editorialToken,
-    contextId,
     payload,
+    auth,
+    contextId,
     {
       method: 'POST',
     }

@@ -1,6 +1,6 @@
-import { XMLValidator } from 'fast-xml-parser';
 import settings from '../commons/settings';
-import { ErrorObject } from '../types/base';
+import { AuthTokens, ErrorObject } from '../types/base';
+import { isValidXML } from './utils';
 
 export async function makeRequest(url: string, params?: RequestInit) {
   const requestUrl = url.startsWith('http') ? url : `${settings.neonFoUrl}${url}`;
@@ -47,9 +47,9 @@ export async function makeRequest(url: string, params?: RequestInit) {
   return response;
 }
 
-export async function makeAuthenticatedRequest(url: string, editorialAuth: string, params?: RequestInit) {
+export async function makeAuthenticatedRequest(url: string, auth: AuthTokens, params?: RequestInit) {
   const authHeaders = {
-    Authorization: `Bearer ${editorialAuth}`,
+    Authorization: `Bearer ${auth.editorialAuth || auth.webAuth}`,
     'neon-fo-access-key': settings.frontOfficeServiceKey,
     ...params?.headers,
   };
@@ -69,12 +69,7 @@ export async function makePostRequest(url: string, payload: string, params?: Req
 }
 
 export async function makePostRequestXMLPayload(url: string, payload: string, params?: RequestInit) {
-  // check XML validity
-  const isValid = XMLValidator.validate(payload, {
-    allowBooleanAttributes: true,
-  });
-
-  if (isValid !== true) {
+  if (isValidXML(payload)) {
     throw {
       cause: { message: 'Invalid XML provided' },
       status: 400,
@@ -95,16 +90,11 @@ export async function makePostRequestXMLPayload(url: string, payload: string, pa
 export async function makeAuthenticatedPostRequestXMLPayload(
   url: string,
   payload: string,
-  editorialAuth: string,
+  auth: AuthTokens,
   contextId: string,
   params?: RequestInit
 ) {
-  // check XML validity
-  const isValid = XMLValidator.validate(payload, {
-    allowBooleanAttributes: true,
-  });
-
-  if (isValid !== true) {
+  if (isValidXML(payload)) {
     throw {
       cause: { message: 'Invalid XML provided' },
       status: 400,
@@ -116,7 +106,7 @@ export async function makeAuthenticatedPostRequestXMLPayload(
     method: 'POST',
     headers: {
       'Content-Type': 'application/xml',
-      Authorization: `Bearer ${editorialAuth}`,
+      Authorization: `Bearer ${auth.editorialAuth || auth.webAuth}`,
       'neon-fo-access-key': settings.frontOfficeServiceKey,
       'update-context-id': contextId,
       ...params?.headers,

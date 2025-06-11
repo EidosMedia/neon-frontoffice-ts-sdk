@@ -8,10 +8,8 @@ export type GetUserAvatarOptions = {
   id: string;
 } & AuthenticatedRequestOptions;
 
-export async function getCurrentUserInfo({ headers }: GetCurrentUserInfoOptions): Promise<User> {
-  const neonUser = await makeRequest(`/directory/sessions/whoami`, {
-    headers,
-  });
+export async function getCurrentUserInfo({ auth }: GetCurrentUserInfoOptions): Promise<User> {
+  const neonUser = await makeAuthenticatedRequest(`/directory/sessions/whoami`, auth);
 
   const filteredUser: User = {
     name: neonUser.user.name,
@@ -22,10 +20,8 @@ export async function getCurrentUserInfo({ headers }: GetCurrentUserInfoOptions)
   return filteredUser;
 }
 
-export async function getUserAvatar({ headers, id, editorialAuth }: GetUserAvatarOptions): Promise<Response> {
-  const user = await makeAuthenticatedRequest(`/directory/users/picture?id=${id}`, editorialAuth || '', {
-    headers,
-  });
+export async function getUserAvatar({ id, auth }: GetUserAvatarOptions): Promise<Response> {
+  const user = await makeAuthenticatedRequest(`/directory/users/picture?id=${id}`, auth);
 
   return user;
 }
