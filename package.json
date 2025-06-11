@@ -13,8 +13,5 @@
   "scripts": {
     "build": "npx tsc",
     "test": "jest"
-  },
-  "dependencies": {
-    "fast-xml-parser": "^5.2.5"
   }
 }
