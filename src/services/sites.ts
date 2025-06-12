@@ -1,7 +1,8 @@
 import settings from '../commons/settings';
 import { Site, Menu } from '../types/site';
-import { makeRequest } from '../utilities/http-client';
+import { makeRequest, makeRequestApiHostname } from '../utilities/http-client';
 import logger from '../utilities/logger';
+import { AuthenticatedRequestOptions } from '../types/base';
 
 export async function loadSites({
   sitemap,
@@ -106,3 +107,16 @@ export async function getMenu(liveHostName: string) : Promise<Menu> {
   return response;
 }
 
+export type LiveBlogPostsRequestOptions = {
+  apiHostname: string;
+  id: string;
+  searchParams: unknown;
+} & AuthenticatedRequestOptions;
+
+export async function getLiveBlogsPosts({ apiHostname, id, searchParams, auth }: LiveBlogPostsRequestOptions) {
+  const response = await makeRequestApiHostname(
+    apiHostname, `/api/v2/liveblogs/${id}/posts?${searchParams}`, auth
+  );
+
+  return response;
+}

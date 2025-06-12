@@ -2,20 +2,30 @@ import settings from '../commons/settings';
 import { AuthTokens, ErrorObject } from '../types/base';
 import { isValidXML } from './utils';
 
-export async function makeRequest(url: string, params?: RequestInit) {
+export async function makeRequest(url: string, auth?: AuthTokens, params?: RequestInit) {
   const requestUrl = url.startsWith('http') ? url : `${settings.neonFoUrl}${url}`;
 
-  const options = {
-    method: params?.method || 'GET',
-    url: requestUrl,
-    headers: {
+  let authHeaders: Record<string, string> = {};
+  if (auth && (auth.editorialAuth || auth.webAuth)) {
+    authHeaders = {
+      Authorization: `Bearer ${auth.editorialAuth || auth.webAuth}`,
       'neon-fo-access-key': settings.frontOfficeServiceKey,
-      ...params?.headers,
-    },
+      ...(auth.contextId ? { 'update-context-id': auth.contextId } : {}),
+      ...(params?.headers as Record<string, string> | undefined),
+    };
+  } else if (params?.headers) {
+    authHeaders = {
+      ...(params.headers as Record<string, string>),
+    };
+  }
+
+  const options: RequestInit = {
+    method: params?.method || 'GET',
+    headers: Object.keys(authHeaders).length > 0 ? authHeaders : undefined,
     body: params?.body,
   };
 
-  const response = await fetch(new URL(requestUrl), options);
+  const response = await fetch(requestUrl, options);
 
   if (!response.ok) {
     try {
@@ -25,7 +35,17 @@ export async function makeRequest(url: string, params?: RequestInit) {
         status: response.status,
         url: requestUrl,
       } as ErrorObject;
-    } catch {
+    } catch (err) {
+      // If the error is already an ErrorObject, rethrow it
+      if (
+        err &&
+        typeof err === 'object' &&
+        'cause' in err &&
+        'status' in err &&
+        'url' in err
+      ) {
+        throw err;
+      }
       throw {
         cause: { message: 'Failed to parse error response' },
         status: response.status,
@@ -47,84 +67,97 @@ export async function makeRequest(url: string, params?: RequestInit) {
   return response;
 }
 
-export async function makeAuthenticatedRequest(url: string, auth: AuthTokens, params?: RequestInit) {
+export async function makePostRequest(url: string, auth: AuthTokens, payload: string, params?: RequestInit) {
+  return await makeRequest(url, auth, {
+    method: 'POST',
+    body: payload,
+    ...params,
+  });
+}
+
+export async function makePostRequestXMLPayload(url: string, auth: AuthTokens, payload: string, params?: RequestInit) {
+  if (isValidXML(payload)) {
+    throw {
+      cause: { message: 'Invalid XML provided' },
+      status: 400,
+      url,
+    } as ErrorObject;
+  }
+
+  return await makeRequest(url, auth, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/xml',
+      ...params?.headers,
+    },
+    body: payload,
+  });
+}
+
+export const makeRequestApiHostname = async (baseUrl: string, path: string, auth: AuthTokens, params: RequestInit = {}) => {
   const authHeaders = {
     Authorization: `Bearer ${auth.editorialAuth || auth.webAuth}`,
     'neon-fo-access-key': settings.frontOfficeServiceKey,
-    ...params?.headers,
   };
 
-  return await makeRequest(url, {
-    ...params,
-    headers: authHeaders,
-  });
-}
+  const requestUrl = new URL(path, baseUrl).toString();
 
-export async function makePostRequest(url: string, payload: string, params?: RequestInit) {
-  return await makeRequest(url, {
-    method: 'POST',
-    body: payload,
-    ...params,
-  });
-}
-
-export async function makePostRequestXMLPayload(url: string, payload: string, params?: RequestInit) {
-  if (isValidXML(payload)) {
-    throw {
-      cause: { message: 'Invalid XML provided' },
-      status: 400,
-      url,
-    } as ErrorObject;
-  }
-
-  return await makeRequest(url, {
-    method: 'POST',
+  const response = await fetch(requestUrl, {
+    method: params?.method || 'GET',
     headers: {
-      'Content-Type': 'application/xml',
-      ...params?.headers,
+      ...authHeaders,
     },
-    body: payload,
+     body: params?.body,
+     ...params,
   });
-}
 
-export async function makeAuthenticatedPostRequestXMLPayload(
-  url: string,
-  payload: string,
-  auth: AuthTokens,
-  contextId: string,
-  params?: RequestInit
-) {
-  if (isValidXML(payload)) {
-    throw {
-      cause: { message: 'Invalid XML provided' },
-      status: 400,
-      url,
-    } as ErrorObject;
+  if (!response.ok) {
+    try {
+      const jsonResp = await response.json();
+      throw {
+        cause: jsonResp,
+        status: response.status,
+        url: requestUrl,
+      } as ErrorObject;
+    } catch (err) {
+      // If the error is already an ErrorObject, rethrow it
+      if (
+        err &&
+        typeof err === 'object' &&
+        'cause' in err &&
+        'status' in err &&
+        'url' in err
+      ) {
+        throw err;
+      }
+      throw {
+        cause: { message: 'Failed to parse error response' },
+        status: response.status,
+        url: requestUrl,
+      } as ErrorObject;
+    }
   }
+  return response;
+};
 
-  return await makeRequest(url, {
+export async function makePostRequestApiHostname(baseUrl: string, path: string, auth: AuthTokens, body: string, params?: RequestInit) {
+  return await makeRequestApiHostname(baseUrl, path, auth, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/xml',
-      Authorization: `Bearer ${auth.editorialAuth || auth.webAuth}`,
-      'neon-fo-access-key': settings.frontOfficeServiceKey,
-      'update-context-id': contextId,
-      ...params?.headers,
-    },
-    body: payload,
+    body,
+    ...params,
   });
 }
 
-export async function makePutRequest(url: string, params?: RequestInit) {
-  return await makeRequest(url, {
+export async function makePutRequest(url: string, auth: AuthTokens, params?: RequestInit) {
+  return await makeRequest(url, auth, {
     method: 'PUT',
     body: JSON.stringify(params),
     ...params,
   });
 }
 
-export async function makeDeleteRequest(url: string, params?: RequestInit) {
-  return await makeRequest(url, {
+export async function makeDeleteRequest(url: string, auth: AuthTokens, params?: RequestInit) {
+  return await makeRequest(url, auth, {
     method: 'DELETE',
     body: JSON.stringify(params),
     ...params,

@@ -1,3 +1,4 @@
+import { AuthenticatedRequestOptions } from './base';
 import { Site, SiteNode } from './site';
 
 export type PageConfiguration = {
@@ -189,7 +190,7 @@ export type PaginatedSearchResult = {
 };
 
 export type PaginatedSearchRagResult = {
-  answer: String;
+  answer: string;
 } & PaginatedSearchResult;
 
 export type RagOnItemsResponse = {
@@ -200,4 +201,4 @@ export type RagOnItemsResponse = {
   };
   status: string;
   statusCode: number;
-};
+} & AuthenticatedRequestOptions;

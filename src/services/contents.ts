@@ -2,8 +2,7 @@ import settings from '../commons/settings';
 import { AuthenticatedRequestOptions } from '../types/base';
 import {
   makeRequest,
-  makeAuthenticatedPostRequestXMLPayload,
-  makeAuthenticatedRequest,
+  makePostRequestXMLPayload,
 } from '../utilities/http-client';
 
 export type PromoteContentLiveOptions = {
@@ -16,7 +15,6 @@ export type UpdateContentItemOptions = {
   id: string;
   contentItemId: string;
   payload: string;
-  contextId: string;
 } & AuthenticatedRequestOptions;
 
 export type RollbackVersionOptions = {
@@ -26,7 +24,7 @@ export type RollbackVersionOptions = {
 } & AuthenticatedRequestOptions;
 
 export async function promoteContentLive({ id, auth, sites }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeAuthenticatedRequest(
+  const req = await makeRequest(
     `${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`,
     auth,
     {
@@ -58,7 +56,7 @@ export async function rollbackVersion(
     },
   };
 
-  const req = await makeAuthenticatedRequest(`${neonFoUrl}/api/contents/nodes/rollback`, auth, {
+  const req = await makeRequest(`${neonFoUrl}/api/contents/nodes/rollback`, auth, {
     method: 'POST',
     body: JSON.stringify(payload),
   });
@@ -67,7 +65,7 @@ export async function rollbackVersion(
 }
 
 export async function unpromoteContentLive({ id, auth, sites }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeAuthenticatedRequest(
+  const req = await makeRequest(
     `${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`,
     auth,
     {
@@ -82,14 +80,12 @@ export async function updateContentItem({
   id,
   contentItemId,
   payload,
-  contextId,
   auth,
 }: UpdateContentItemOptions): Promise<Response> {
-  const req = await makeAuthenticatedPostRequestXMLPayload(
+  const req = await makePostRequestXMLPayload(
     `${settings.neonFoUrl}/api/contents/story/${id}/contentitem/${contentItemId}?saveMode=MINOR_CHECKIN&keepCheckedout=false`,
-    payload,
     auth,
-    contextId,
+    payload,
     {
       method: 'POST',
     }

@@ -1,13 +1,14 @@
 import settings from '../commons/settings';
-import { loadSites } from '../services/sites';
-import { Site, SiteNode, Menu } from '../types/site';
+import { loadSites, getLiveBlogsPosts, LiveBlogPostsRequestOptions } from '../services/sites';
+import { Site, SiteNode } from '../types/site';
 import { makeRequest } from './http-client';
 import { PageData, RagOnItemsResponse, WebpageModel, WebpageNodeModel } from '../types/content';
 import { VERSIONS } from '../conf/versions';
-import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions } from '../services/users';
+import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions, LoginRequestOptions, login } from '../services/users';
 import { promoteContentLive, unpromoteContentLive, updateContentItem, PromoteContentLiveOptions, UpdateContentItemOptions, rollbackVersion, RollbackVersionOptions} from '../services/contents';
 import { User } from '../types/user';
 import { askAboutContents, AskAboutContentsOptions } from '../services/augmented-search';
+import { AuthTokens } from '../types/base';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
@@ -58,6 +59,14 @@ export class NeonConnection {
   async rollbackVersion(options: RollbackVersionOptions): Promise<Response> {
     console.log('rollbackVersion called with', options)
     return await rollbackVersion(settings.neonFoUrl, options);
+  }
+
+  async getLiveBlogsPosts(options: LiveBlogPostsRequestOptions): Promise<Response> {
+    return await getLiveBlogsPosts(options);
+  }
+
+  async login(options: LoginRequestOptions): Promise<Response> {
+    return await login(options);
   }
 
   async getSitesList() {
@@ -129,13 +138,13 @@ export class NeonConnection {
   }
 
   async previewAuthorization(contentId: string, siteName: string, viewStatus: string, previewToken: string) {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + previewToken,
-      },
+    const auth: AuthTokens = {
+      editorialAuth: previewToken,
+      webAuth: '',
+      contextId: undefined,
     };
 
-    return await makeRequest(`/api/pages/${contentId}/authorization/${siteName}/${viewStatus}`, options);
+    return await makeRequest(`/api/pages/${contentId}/authorization/${siteName}/${viewStatus}`, auth);
   }
 
   async getDwxLinkedObjects(pageData: PageData<WebpageModel>, zoneName?: string): Promise<WebpageNodeModel[]> {

@@ -44,6 +44,7 @@ export interface ErrorObject {
 export interface AuthTokens {
   editorialAuth?: string;
   webAuth?: string;
+  contextId?: string;
 }
 
 export interface AuthenticatedRequestOptions {
