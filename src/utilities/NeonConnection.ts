@@ -7,7 +7,7 @@ import { VERSIONS } from '../conf/versions';
 import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions, LoginRequestOptions, login } from '../services/users';
 import { promoteContentLive, unpromoteContentLive, updateContentItem, PromoteContentLiveOptions, UpdateContentItemOptions, rollbackVersion, RollbackVersionOptions} from '../services/contents';
 import { User } from '../types/user';
-import { askAboutContents, AskAboutContentsOptions } from '../services/augmented-search';
+import { askAboutContents, AskAboutContentsOptions, SearchOptions, search } from '../services/augmented-search';
 import { AuthTokens } from '../types/base';
 
 type NeonConnectionParams = {
@@ -78,6 +78,10 @@ export class NeonConnection {
     }
 
     return this.sites;
+  }
+
+  async search(options: SearchOptions){
+    return await search(options);
   }
 
   async refreshLiveSites() {
