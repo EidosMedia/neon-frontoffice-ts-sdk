@@ -1,6 +1,6 @@
 import { AuthenticatedRequestOptions } from '../types/base';
 import { RagOnItemsResponse } from '../types/content';
-import { makePostRequest, makeRequestApiHostname} from '../utilities/http-client';
+import { makeRequest, makePostRequest} from '../utilities/http-client';
 
 export type AskAboutContentsOptions = {
     query: string;
@@ -16,12 +16,11 @@ export type SearchOptions = {
 export async function askAboutContents({  query, ids , baseUrl, auth }: AskAboutContentsOptions): Promise<RagOnItemsResponse> {
 
     const req = await makePostRequest(
-      `${baseUrl}/api/augmented-search/public/liveindex/rag?query=${query}`,
-      auth,
-      JSON.stringify(ids),
       {
-        method: 'POST',
-     }
+        url: `${baseUrl}/api/augmented-search/public/liveindex/rag?query=${query}`,
+        auth
+      },
+      JSON.stringify(ids)
     );
 
     return req;
@@ -39,7 +38,11 @@ export async function askAboutContents({  query, ids , baseUrl, auth }: AskAbout
       searchParams.append('baseType', 'liveblog');
     }
 
-    return await makeRequestApiHostname(apiHostname, `${url}?${searchParams}`, auth);
+    return await makeRequest({
+      url: `${url}?${searchParams}`,
+      auth,
+      apiHostname
+    });
   } catch (error) {
     console.log('Error in search POST request:', error);
     return Response.json(

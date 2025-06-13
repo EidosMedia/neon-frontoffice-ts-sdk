@@ -1,6 +1,6 @@
-import { makeRequest, makePostRequestApiHostname } from '../utilities/http-client';
+import { makeRequest, makePostRequest } from '../utilities/http-client';
 import { User } from '../types/user';
-import { AuthenticatedRequestOptions, ErrorObject } from '../types/base';
+import { AuthenticatedRequestOptions } from '../types/base';
 
 export type GetCurrentUserInfoOptions = {} & AuthenticatedRequestOptions;
 
@@ -16,7 +16,7 @@ export type LoginRequestOptions = {
 };
 
 export async function getCurrentUserInfo({ auth }: GetCurrentUserInfoOptions): Promise<User> {
-  const neonUser = await makeRequest(`/directory/sessions/whoami`, auth);
+  const neonUser = await makeRequest({ url: `/directory/sessions/whoami`, auth });
 
   const filteredUser: User = {
     name: neonUser.user.name,
@@ -28,7 +28,7 @@ export async function getCurrentUserInfo({ auth }: GetCurrentUserInfoOptions): P
 }
 
 export async function getUserAvatar({ id, auth }: GetUserAvatarOptions): Promise<Response> {
-  const user = await makeRequest(`/directory/users/picture?id=${id}`, auth);
+  const user = await makeRequest({ url: `/directory/users/picture?id=${id}`, auth });
 
   return user;
 }
@@ -45,7 +45,10 @@ export async function login({ apiHostname, name, password, rememberMe=false }: L
     body: JSON.stringify({ name, password }),
   };
 
-  const response = await makePostRequestApiHostname( apiHostname, url, {}, JSON.stringify({ name, password }), options);
+  const response = await makePostRequest(
+    { apiHostname, url, params: options },
+    JSON.stringify({ name, password })
+  );
 
   return response;
 }

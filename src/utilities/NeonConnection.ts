@@ -57,7 +57,6 @@ export class NeonConnection {
   }
 
   async rollbackVersion(options: RollbackVersionOptions): Promise<Response> {
-    console.log('rollbackVersion called with', options)
     return await rollbackVersion(settings.neonFoUrl, options);
   }
 
@@ -148,7 +147,7 @@ export class NeonConnection {
       contextId: undefined,
     };
 
-    return await makeRequest(`/api/pages/${contentId}/authorization/${siteName}/${viewStatus}`, auth);
+    return await makeRequest({ url: `/api/pages/${contentId}/authorization/${siteName}/${viewStatus}`, auth });
   }
 
   async getDwxLinkedObjects(pageData: PageData<WebpageModel>, zoneName?: string): Promise<WebpageNodeModel[]> {
@@ -183,7 +182,7 @@ export class NeonConnection {
 
   async getBackendInfo(): Promise<BackendInfo> {
     try {
-      const response = await makeRequest('/api');
+      const response = await makeRequest({ url: '/api' });
       return response as BackendInfo;
     } catch (error) {
       console.error('Failed to fetch backend info:', error);

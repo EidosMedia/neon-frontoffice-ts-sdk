@@ -1,6 +1,6 @@
 import settings from '../commons/settings';
 import { Site, Menu } from '../types/site';
-import { makeRequest, makeRequestApiHostname } from '../utilities/http-client';
+import { makeRequest } from '../utilities/http-client';
 import logger from '../utilities/logger';
 import { AuthenticatedRequestOptions } from '../types/base';
 
@@ -11,11 +11,11 @@ export async function loadSites({
   sitemap: boolean;
   viewStatus: string;
 }) {
-  const sites = await makeRequest(
-    `/api/sites/${viewStatus}?${new URLSearchParams({
+  const sites = await makeRequest({
+    url: `/api/sites/${viewStatus}?${new URLSearchParams({
       siteMap: sitemap.toString(),
     }).toString()}`
-  );
+  });
 
   const sitesWithSitemap = await Promise.all(
     sites.map(async (site: Site) => ({
@@ -91,7 +91,7 @@ export async function getLogoUrl(id: string, liveHostName: string) {
 
   console.log(logoUrl);
   
-  const response = await makeRequest(logoUrl);
+  const response = await makeRequest({ url: logoUrl });
 
   return response.files?.logo.resourceUrl;
 }
@@ -102,7 +102,7 @@ export async function getMenu(liveHostName: string) : Promise<Menu> {
 
   const menuUrl = `${envProtocol}//${requestUrl}`;
 
-  const response = await makeRequest(menuUrl);
+  const response = await makeRequest({ url: menuUrl });
 
   return response;
 }
@@ -114,8 +114,8 @@ export type LiveBlogPostsRequestOptions = {
 } & AuthenticatedRequestOptions;
 
 export async function getLiveBlogsPosts({ apiHostname, id, searchParams, auth }: LiveBlogPostsRequestOptions) {
-  const response = await makeRequestApiHostname(
-    apiHostname, `/api/v2/liveblogs/${id}/posts?${searchParams}`, auth
+  const response = await makeRequest(
+    { apiHostname, url: `/api/v2/liveblogs/${id}/posts?${searchParams}`, auth }
   );
 
   return response;
