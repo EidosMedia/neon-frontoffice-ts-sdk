@@ -36,7 +36,7 @@ export type PageNode = {
 };
 
 export interface ErrorObject {
-  cause: unknown;
+  cause: object;
   status: number;
   url: string;
 }
