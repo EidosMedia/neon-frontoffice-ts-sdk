@@ -6,10 +6,11 @@ type MakeRequestOptions = {
   url: string;
   auth?: AuthTokens;
   params?: RequestInit;
-  apiHostname?: string; // your new optional string parameter
+  apiHostname?: string;
+  convertToJSON?: boolean;
 };
 
-export async function makeRequest({ url, auth, params, apiHostname }: MakeRequestOptions) {
+export async function makeRequest({ url, auth, params, apiHostname, convertToJSON=true }: MakeRequestOptions) {
   let requestUrl = url.startsWith('http') ? url : `${settings.neonFoUrl}${url}`;
 
   if (apiHostname) {
@@ -66,14 +67,14 @@ export async function makeRequest({ url, auth, params, apiHostname }: MakeReques
 
   const contentType = response.headers.get('content-type');
 
-  if (contentType && contentType.includes('application/json')) {
+  if (contentType && contentType.includes('application/json') && convertToJSON) {
     return await response.json();
   }
 
   return response;
 }
 
-export async function makePostRequest({ url, auth, params, apiHostname }: MakeRequestOptions, payload: string) {
+export async function makePostRequest({ url, auth, params, apiHostname, convertToJSON }: MakeRequestOptions, payload: string) {
   return await makeRequest({
     url,
     auth,
@@ -83,6 +84,7 @@ export async function makePostRequest({ url, auth, params, apiHostname }: MakeRe
       ...params,
     },
     apiHostname,
+    convertToJSON,
   });
 }
 

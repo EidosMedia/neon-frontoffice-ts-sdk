@@ -6,7 +6,7 @@ import { PageData, RagOnItemsResponse, WebpageModel, WebpageNodeModel } from '..
 import { VERSIONS } from '../conf/versions';
 import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions, LoginRequestOptions, login } from '../services/users';
 import { promoteContentLive, unpromoteContentLive, updateContentItem, PromoteContentLiveOptions, UpdateContentItemOptions, rollbackVersion, RollbackVersionOptions} from '../services/contents';
-import { User } from '../types/user';
+import { User,UserWithAuthentication } from '../types/user';
 import { askAboutContents, AskAboutContentsOptions, SearchOptions, search } from '../services/augmented-search';
 import { AuthTokens } from '../types/base';
 
@@ -64,7 +64,7 @@ export class NeonConnection {
     return await getLiveBlogsPosts(options);
   }
 
-  async login(options: LoginRequestOptions): Promise<Response> {
+  async login(options: LoginRequestOptions): Promise<UserWithAuthentication> {
     return await login(options);
   }
 

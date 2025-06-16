@@ -4,3 +4,11 @@ export type User = {
   id: string;
   alias: string;
 };
+
+export type UserWithAuthentication = {
+  name: string;
+  avatarUrl?: string;
+  id: string;
+  alias: string;
+  webauthToken: string;
+};

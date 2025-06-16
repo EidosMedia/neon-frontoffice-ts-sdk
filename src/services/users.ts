@@ -1,5 +1,5 @@
 import { makeRequest, makePostRequest } from '../utilities/http-client';
-import { User } from '../types/user';
+import { User,UserWithAuthentication } from '../types/user';
 import { AuthenticatedRequestOptions } from '../types/base';
 
 export type GetCurrentUserInfoOptions = {} & AuthenticatedRequestOptions;
@@ -33,7 +33,7 @@ export async function getUserAvatar({ id, auth }: GetUserAvatarOptions): Promise
   return user;
 }
 
-export async function login({ apiHostname, name, password, rememberMe=false }: LoginRequestOptions): Promise<Response> {
+export async function login({ apiHostname, name, password, rememberMe=false }: LoginRequestOptions): Promise<UserWithAuthentication> {
   const url = `/api/login?rememberMe=${rememberMe}`;
 
   const options: RequestInit = {
@@ -46,9 +46,35 @@ export async function login({ apiHostname, name, password, rememberMe=false }: L
   };
 
   const response = await makePostRequest(
-    { apiHostname, url, params: options },
+    { apiHostname, url, params: options, convertToJSON: false },
     JSON.stringify({ name, password })
   );
 
-  return response;
+  // Get the 'webauth' cookie from the response headers
+  let webauthToken = '';
+  if (response && response.headers) {
+    const cookieHeader = response.headers.get('set-cookie');
+    if (cookieHeader) {
+      // Find the 'webauth' cookie in the set-cookie header
+      const match = cookieHeader.match(/webauth=([^;]+)/);
+      if (match) {
+        webauthToken = match[1];
+      }
+    }
+  }
+
+  // If response is a Response object, parse JSON body
+  let userData: any = response;
+  if (typeof Response !== 'undefined' && response instanceof Response) {
+    userData = await response.json();
+  }
+
+  const filteredUser: UserWithAuthentication = {
+    name: userData.name,
+    id: userData.id,
+    alias: userData.alias,
+    webauthToken,
+  };
+
+  return filteredUser;
 }
