@@ -9,12 +9,7 @@ type MakeRequestOptions = {
   apiHostname?: string; // your new optional string parameter
 };
 
-export async function makeRequest({
-  url,
-  auth,
-  params,
-  apiHostname,
-}: MakeRequestOptions) {
+export async function makeRequest({ url, auth, params, apiHostname }: MakeRequestOptions) {
   let requestUrl = url.startsWith('http') ? url : `${settings.neonFoUrl}${url}`;
 
   if (apiHostname) {
@@ -25,7 +20,6 @@ export async function makeRequest({
   if (auth && (auth.editorialAuth || auth.webAuth)) {
     authHeaders = {
       Authorization: `Bearer ${auth.editorialAuth || auth.webAuth}`,
-      'neon-fo-access-key': settings.frontOfficeServiceKey,
       ...(auth.contextId ? { 'update-context-id': auth.contextId } : {}),
       ...(params?.headers as Record<string, string> | undefined),
     };
@@ -34,6 +28,8 @@ export async function makeRequest({
       ...(params.headers as Record<string, string>),
     };
   }
+
+  authHeaders['neon-fo-access-key'] = settings.frontOfficeServiceKey;
 
   const options: RequestInit = {
     method: params?.method || 'GET',
@@ -53,13 +49,7 @@ export async function makeRequest({
       } as ErrorObject;
     } catch (err) {
       // If the error is already an ErrorObject, rethrow it
-      if (
-        err &&
-        typeof err === 'object' &&
-        'cause' in err &&
-        'status' in err &&
-        'url' in err
-      ) {
+      if (err && typeof err === 'object' && 'cause' in err && 'status' in err && 'url' in err) {
         throw err;
       }
       throw {
@@ -83,12 +73,7 @@ export async function makeRequest({
   return response;
 }
 
-export async function makePostRequest({
-  url,
-  auth,
-  params,
-  apiHostname,
-}: MakeRequestOptions, payload: string) {
+export async function makePostRequest({ url, auth, params, apiHostname }: MakeRequestOptions, payload: string) {
   return await makeRequest({
     url,
     auth,
@@ -101,12 +86,10 @@ export async function makePostRequest({
   });
 }
 
-export async function makePostRequestXMLPayload({
-  url,
-  auth,
-  params,
-  apiHostname,
-}: MakeRequestOptions, payload: string) {
+export async function makePostRequestXMLPayload(
+  { url, auth, params, apiHostname }: MakeRequestOptions,
+  payload: string
+) {
   if (isValidXML(payload)) {
     throw {
       cause: { message: 'Invalid XML provided' },
@@ -130,12 +113,7 @@ export async function makePostRequestXMLPayload({
   });
 }
 
-export async function makePutRequest({
-  url,
-  auth,
-  params,
-  apiHostname,
-}: MakeRequestOptions, payload: string) {
+export async function makePutRequest({ url, auth, params, apiHostname }: MakeRequestOptions, payload: string) {
   return await makeRequest({
     url,
     auth,
@@ -148,12 +126,7 @@ export async function makePutRequest({
   });
 }
 
-export async function makeDeleteRequest({
-  url,
-  auth,
-  params,
-  apiHostname,
-}: MakeRequestOptions) {
+export async function makeDeleteRequest({ url, auth, params, apiHostname }: MakeRequestOptions) {
   return await makeRequest({
     url,
     auth,
