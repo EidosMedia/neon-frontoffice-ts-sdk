@@ -10,5 +10,6 @@ export type UserWithAuthentication = {
   avatarUrl?: string;
   id: string;
   alias: string;
+  email: string;
   webauthToken: string;
 };

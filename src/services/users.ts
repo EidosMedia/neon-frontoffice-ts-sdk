@@ -73,6 +73,7 @@ export async function login({ apiHostname, name, password, rememberMe=false }: L
     name: userData.name,
     id: userData.id,
     alias: userData.alias,
+    email: userData.email,
     webauthToken,
   };
 
