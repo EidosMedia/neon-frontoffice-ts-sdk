@@ -56,7 +56,7 @@ export async function rollbackVersion(
   };
 
   const req = await makePostRequest(
-    { url: `${neonFoUrl}/api/contents/nodes/rollback`, auth },
+    { url: `${neonFoUrl}/api/contents/nodes/rollback`, auth, params: { headers: { 'Content-Type': 'application/json', } } },
     JSON.stringify(payload)
   );
 
