@@ -1,5 +1,5 @@
 import settings from '../commons/settings';
-import { Site, Menu } from '../types/site';
+import { Site, Menu, LiveBlogPost } from '../types/site';
 import { makeRequest } from '../utilities/http-client';
 import logger from '../utilities/logger';
 import { AuthenticatedRequestOptions } from '../types/base';
@@ -113,10 +113,24 @@ export type LiveBlogPostsRequestOptions = {
   searchParams: unknown;
 } & AuthenticatedRequestOptions;
 
-export async function getLiveBlogsPosts({ apiHostname, id, searchParams, auth }: LiveBlogPostsRequestOptions) {
+export async function getLiveBlogsPosts({ apiHostname, id, searchParams, auth }: LiveBlogPostsRequestOptions) : Promise<{ posts: LiveBlogPost[] }> {
   const response = await makeRequest(
     { apiHostname, url: `/api/v2/liveblogs/${id}/posts?${searchParams}`, auth }
   );
 
-  return response;
+  // Build an array of LiveBlogPost instances from response.posts
+  const posts: LiveBlogPost[] = Array.isArray(response.posts)
+    ? response.posts.map((post: any) => ({
+        id: post.id,
+        sys: post.sys,
+        pubInfo: post.pubInfo,
+        files: post.files,
+        dataType: post.dataType,
+      }))
+    : [];
+
+  // Optionally, return the full response with typed posts
+  return {
+    posts,
+  };
 }

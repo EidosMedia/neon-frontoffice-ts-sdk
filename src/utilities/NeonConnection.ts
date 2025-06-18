@@ -2,7 +2,7 @@ import settings from '../commons/settings';
 import { loadSites, getLiveBlogsPosts, LiveBlogPostsRequestOptions } from '../services/sites';
 import { Site, SiteNode } from '../types/site';
 import { makeRequest } from './http-client';
-import { PageData, RagOnItemsResponse, WebpageModel, WebpageNodeModel } from '../types/content';
+import { PageData, RagOnItemsResponse, RollbackResponse, WebpageModel, WebpageNodeModel, LiveBlogPost } from '../types/content';
 import { VERSIONS } from '../conf/versions';
 import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions, LoginRequestOptions, login } from '../services/users';
 import { promoteContentLive, unpromoteContentLive, updateContentItem, PromoteContentLiveOptions, UpdateContentItemOptions, rollbackVersion, RollbackVersionOptions} from '../services/contents';
@@ -36,18 +36,22 @@ export class NeonConnection {
     return await getCurrentUserInfo(options);
   }
 
+  //No response type defined because it returns an image
   async getUserAvatar(options: GetUserAvatarOptions): Promise<Response> {
     return await getUserAvatar(options);
   }
 
+  //No response type defined because the callers does not need it
   async promoteContentLive(options: PromoteContentLiveOptions): Promise<Response> {
     return await promoteContentLive(options);
   }
 
+  //No response type defined because the callers does not need it
   async unpromoteContentLive(options: PromoteContentLiveOptions): Promise<Response> {
     return await unpromoteContentLive(options);
   }
 
+  //No response type defined because the callers does not need it
   async updateContentItem(options: UpdateContentItemOptions): Promise<Response> {
     return await updateContentItem(options);
   }
@@ -56,11 +60,11 @@ export class NeonConnection {
     return await askAboutContents(options);
   }
 
-  async rollbackVersion(options: RollbackVersionOptions): Promise<Response> {
+  async rollbackVersion(options: RollbackVersionOptions): Promise<RollbackResponse> {
     return await rollbackVersion(settings.neonFoUrl, options);
   }
 
-  async getLiveBlogsPosts(options: LiveBlogPostsRequestOptions): Promise<Response> {
+  async getLiveBlogsPosts(options: LiveBlogPostsRequestOptions): Promise<LiveBlogPost[]> {
     return await getLiveBlogsPosts(options);
   }
 

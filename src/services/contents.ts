@@ -4,6 +4,7 @@ import {
   makePostRequest,makeDeleteRequest,
   makePostRequestXMLPayload,
 } from '../utilities/http-client';
+import { RollbackResponse } from '../types/content';
 
 export type PromoteContentLiveOptions = {
   id: string;
@@ -24,20 +25,20 @@ export type RollbackVersionOptions = {
 } & AuthenticatedRequestOptions;
 
 export async function promoteContentLive({ id, auth, sites }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makePostRequest(
+  const response = await makePostRequest(
     {
       url: `${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`,
       auth,
     },'{}' // Empty payload as per the original code
   );
 
-  return req;
+  return response;
 }
 
 export async function rollbackVersion(
   neonFoUrl: string,
   { version, rollbackLinks, rollbackMetadata, auth }: RollbackVersionOptions
-): Promise<Response> {
+): Promise<RollbackResponse> {
   const payload = {
     versionToRollback: version,
     rollbackLinks: rollbackLinks,
@@ -55,21 +56,25 @@ export async function rollbackVersion(
     },
   };
 
-  const req = await makePostRequest(
+  const response = await makePostRequest(
     { url: `${neonFoUrl}/api/contents/nodes/rollback`, auth, params: { headers: { 'Content-Type': 'application/json', } } },
     JSON.stringify(payload)
   );
 
-  return req;
+  const rollbackResponse: RollbackResponse = {
+    nodeRef: response.nodeRef,
+  };
+
+  return rollbackResponse;
 }
 
 export async function unpromoteContentLive({ id, auth, sites }: PromoteContentLiveOptions): Promise<Response> {
-  const req = await makeDeleteRequest({
+  const response = await makeDeleteRequest({
     url: `${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`,
     auth,
   });
 
-  return req;
+  return response;
 }
 
 export async function updateContentItem({
@@ -78,7 +83,7 @@ export async function updateContentItem({
   payload,
   auth,
 }: UpdateContentItemOptions): Promise<Response> {
-  const req = await makePostRequestXMLPayload(
+  const response = await makePostRequestXMLPayload(
     {
       url: `${settings.neonFoUrl}/api/contents/story/${id}/contentitem/${contentItemId}?saveMode=MINOR_CHECKIN&keepCheckedout=false`,
       auth,
@@ -86,5 +91,5 @@ export async function updateContentItem({
     payload
   );
 
-  return req;
+  return response;
 }

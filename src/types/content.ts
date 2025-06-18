@@ -202,3 +202,21 @@ export type RagOnItemsResponse = {
   status: string;
   statusCode: number;
 } & AuthenticatedRequestOptions;
+
+export type RollbackResponse = {
+  nodeRef: string;
+}
+
+export type LiveBlogPost = {
+  id: string;
+  sys: Record<string, string>;
+  pubInfo: any;
+  files: {
+    content: {
+      mimeType: string;
+      data: ContentElement;
+      jsonFileEmbeddedNoImage: boolean;
+    };
+  };
+  dataType: string;
+};

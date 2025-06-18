@@ -15,7 +15,7 @@ export type SearchOptions = {
 
 export async function askAboutContents({  query, ids , baseUrl, auth }: AskAboutContentsOptions): Promise<RagOnItemsResponse> {
 
-    const req = await makePostRequest(
+    const response = await makePostRequest(
       {
         url: `${baseUrl}/api/augmented-search/public/liveindex/rag?query=${query}`,
         auth
@@ -23,7 +23,7 @@ export async function askAboutContents({  query, ids , baseUrl, auth }: AskAbout
       JSON.stringify(ids)
     );
 
-    return req;
+    return response;
   }
 
   export async function search({ apiHostname, searchParams, auth }: SearchOptions) {
