@@ -65,7 +65,8 @@ export class NeonConnection {
   }
 
   async getLiveBlogsPosts(options: LiveBlogPostsRequestOptions): Promise<LiveBlogPost[]> {
-    return await getLiveBlogsPosts(options);
+    const result = await getLiveBlogsPosts(options);
+    return result.posts;
   }
 
   async login(options: LoginRequestOptions): Promise<UserWithAuthentication> {
