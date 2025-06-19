@@ -8,7 +8,8 @@ import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAv
 import { promoteContentLive, unpromoteContentLive, updateContentItem, PromoteContentLiveOptions, UpdateContentItemOptions, rollbackVersion, RollbackVersionOptions} from '../services/contents';
 import { User,UserWithAuthentication } from '../types/user';
 import { askAboutContents, AskAboutContentsOptions, SearchOptions, search } from '../services/augmented-search';
-import { AuthTokens } from '../types/base';
+import { AuthContext } from '../types/base';
+import { validateEditorialAuthContext } from './utils';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
@@ -53,6 +54,7 @@ export class NeonConnection {
 
   //No response type defined because the callers does not need it
   async updateContentItem(options: UpdateContentItemOptions): Promise<Response> {
+    validateEditorialAuthContext(options.auth);
     return await updateContentItem(options);
   }
 
@@ -146,7 +148,7 @@ export class NeonConnection {
   }
 
   async previewAuthorization(contentId: string, siteName: string, viewStatus: string, previewToken: string) {
-    const auth: AuthTokens = {
+    const auth: AuthContext = {
       editorialAuth: previewToken,
       webAuth: '',
       contextId: undefined,

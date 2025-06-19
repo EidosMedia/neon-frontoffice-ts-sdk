@@ -41,12 +41,12 @@ export interface ErrorObject {
   url: string;
 }
 
-export interface AuthTokens {
+export interface AuthContext {
   editorialAuth?: string;
   webAuth?: string;
   contextId?: string;
 }
 
 export interface AuthenticatedRequestOptions {
-  auth: AuthTokens;
+  auth: AuthContext;
 }

@@ -1,10 +1,10 @@
 import settings from '../commons/settings';
-import { AuthTokens, ErrorObject } from '../types/base';
+import { AuthContext, ErrorObject } from '../types/base';
 import { isValidXML } from './utils';
 
 type MakeRequestOptions = {
   url: string;
-  auth?: AuthTokens;
+  auth?: AuthContext;
   params?: RequestInit;
   apiHostname?: string;
   convertToJSON?: boolean;
@@ -18,9 +18,9 @@ export async function makeRequest({ url, auth, params, apiHostname, convertToJSO
   }
 
   let authHeaders: Record<string, string> = {};
-  if (auth && (auth.editorialAuth || auth.webAuth)) {
+  if (auth && (auth.webAuth || auth.editorialAuth)) {
     authHeaders = {
-      Authorization: `Bearer ${auth.editorialAuth || auth.webAuth}`,
+      Authorization: `Bearer ${auth.webAuth || auth.editorialAuth}`,
       ...(auth.contextId ? { 'update-context-id': auth.contextId } : {}),
       ...(params?.headers as Record<string, string> | undefined),
     };
