@@ -44,11 +44,13 @@ export class NeonConnection {
 
   //No response type defined because the callers does not need it
   async promoteContentLive(options: PromoteContentLiveOptions): Promise<Response> {
+    validateEditorialAuthContext(options.auth);
     return await promoteContentLive(options);
   }
 
   //No response type defined because the callers does not need it
   async unpromoteContentLive(options: PromoteContentLiveOptions): Promise<Response> {
+    validateEditorialAuthContext(options.auth);
     return await unpromoteContentLive(options);
   }
 
@@ -63,6 +65,7 @@ export class NeonConnection {
   }
 
   async rollbackVersion(options: RollbackVersionOptions): Promise<RollbackResponse> {
+    validateEditorialAuthContext(options.auth);
     return await rollbackVersion(settings.neonFoUrl, options);
   }
 
@@ -73,6 +76,12 @@ export class NeonConnection {
 
   async login(options: LoginRequestOptions): Promise<UserWithAuthentication> {
     return await login(options);
+  }
+
+  //No response type defined because the callers does not need it
+  async makeApiRequest(url: string, auth?: AuthContext, params?: RequestInit, apiHostname?: string, convertToJSON = false): Promise<Response> {
+    const response = await makeRequest({ url, auth, params, apiHostname, convertToJSON });
+    return response;
   }
 
   async getSitesList() {
@@ -147,9 +156,9 @@ export class NeonConnection {
     return sites.find(site => site.root.id === siteId);
   }
 
-  async previewAuthorization(contentId: string, siteName: string, viewStatus: string, previewToken: string) {
+  async previewAuthorization(contentId: string, siteName: string, viewStatus: string, editorialAuth: string) {
     const auth: AuthContext = {
-      editorialAuth: previewToken,
+      editorialAuth: editorialAuth,
       webAuth: '',
       contextId: undefined,
     };
