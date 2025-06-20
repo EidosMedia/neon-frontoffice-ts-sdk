@@ -8,13 +8,19 @@ type MakeRequestOptions = {
   params?: RequestInit;
   apiHostname?: string;
   convertToJSON?: boolean;
+  calculateURL?: boolean;
 };
 
-export async function makeRequest({ url, auth, params, apiHostname, convertToJSON=true }: MakeRequestOptions) {
-  let requestUrl = url.startsWith('http') ? url : `${settings.neonFoUrl}${url}`;
+export async function makeRequest({ url, auth, params, apiHostname, convertToJSON=true, calculateURL=true }: MakeRequestOptions) {
+  let requestUrl: string;
+  if(calculateURL){
+    requestUrl = url.startsWith('http') ? url : `${settings.neonFoUrl}${url}`;
 
-  if (apiHostname) {
-    requestUrl = new URL(url, apiHostname).toString();
+    if (apiHostname) {
+      requestUrl = new URL(url, apiHostname).toString();
+    }
+  }else{
+    requestUrl = url;
   }
 
   let authHeaders: Record<string, string> = {};
@@ -36,11 +42,14 @@ export async function makeRequest({ url, auth, params, apiHostname, convertToJSO
     method: params?.method || 'GET',
     headers: Object.keys(authHeaders).length > 0 ? authHeaders : undefined,
     body: params?.body,
+    redirect: params?.redirect || 'follow',
+    cache: params?.cache || 'default',
   };
 
   const response = await fetch(requestUrl, options);
 
-  if (!response.ok) {
+  // Enter error handling only if not ok and not a redirect (status 300-399)
+  if (!response.ok && (response.status < 300 || response.status >= 400)) {
     try {
       const jsonResp = await response.json();
       throw {

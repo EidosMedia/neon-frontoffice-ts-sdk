@@ -84,6 +84,11 @@ export class NeonConnection {
     return response;
   }
 
+  async makePageRequest(url: string, auth?: AuthContext, params?: RequestInit, apiHostname?: string): Promise<Response> {
+    const response = await makeRequest({ url, auth, params, apiHostname, convertToJSON: false, calculateURL: false });
+    return response;
+  }
+
   async getSitesList() {
     if (this.sites.length === 0) {
       const liveSites = await this.refreshLiveSites();
