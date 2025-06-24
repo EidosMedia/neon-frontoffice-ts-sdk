@@ -23,7 +23,9 @@ This toolkit is designed to be **agnostic**, meaning it can be used in:
 ## Compatibility
 
 - ✅ Framework-independent
-- ✅ Compatible with both browser and server environments
+- ✅ Designed for server-side integrations
+
+**Note:** For security reasons, this library must not be used for browser scripting.
 
 ## Disclaimer
 
