@@ -34,7 +34,7 @@ The certified compatible NEON versions that can be used are in src/conf/versions
 
 ## License
 
-This library is provided under the BSD-3-Clause license model for usages allowed by the license.
+This library is provided under the BSD-3-Clause license, allowing usages as specified by the license.
 
 ## Getting Started
 
