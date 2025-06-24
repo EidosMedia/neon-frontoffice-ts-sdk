@@ -1,6 +1,6 @@
 # Neon frontoffice typescript SDK
 
-> A lightweight, framework-agnostic JavaScript library for interacting with **Eidosmedia Neon**.
+> A lightweight, framework-agnostic TypeScript library for interacting with **Eidosmedia Neon**'s "Front Office" end points.
 
 This is the library for communicating with Neon front office services. It exposes APIs for backend communication and a suitable type system definition.
 
@@ -30,6 +30,11 @@ This toolkit is designed to be **agnostic**, meaning it can be used in:
 ## Disclaimer
 
 This library is maintained in conjunction with the Eidosmedia Neon ecosystem and may evolve in parallel with its core APIs. Please validate compatibility before integrating it into production systems.
+The certified compatible NEON versions that can be used are in src/conf/versions.ts file 
+
+## License
+
+This library is provided under the BSD-3-Clause license model for usages allowed by the license.
 
 ## Getting Started
 
