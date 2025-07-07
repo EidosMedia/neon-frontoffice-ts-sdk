@@ -1,10 +1,7 @@
 import settings from '../commons/settings';
-import { AuthenticatedRequestOptions } from '../types/base';
-import {
-  makePostRequest,makeDeleteRequest,
-  makePostRequestXMLPayload,
-} from '../utilities/http-client';
-import { RollbackResponse } from '../types/content';
+import {AuthenticatedRequestOptions} from '../types/base';
+import {makeDeleteRequest, makePostRequest, makePostRequestXMLPayload,} from '../utilities/http-client';
+import {RollbackResponse} from '../types/content';
 
 export type PromoteContentLiveOptions = {
   id: string;
@@ -25,14 +22,15 @@ export type RollbackVersionOptions = {
 } & AuthenticatedRequestOptions;
 
 export async function promoteContentLive({ id, auth, sites }: PromoteContentLiveOptions): Promise<Response> {
-  const response = await makePostRequest(
-    {
-      url: `${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`,
-      auth,
-    },'{}' // Empty payload as per the original code
+  return await makePostRequest(
+      {
+        params: {
+          headers: {'Content-Type': 'application/json'}
+        },
+        url: `${settings.neonFoUrl}/api/contents/nodes/${id}/promote/live?sites=${sites}`,
+        auth,
+      }, '{}' // Empty payload as per the original code
   );
-
-  return response;
 }
 
 export async function rollbackVersion(
