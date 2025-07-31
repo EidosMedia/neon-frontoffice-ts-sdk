@@ -1,13 +1,35 @@
 import settings from '../commons/settings';
-import { loadSites, getLiveBlogsPosts, LiveBlogPostsRequestOptions } from '../services/sites';
+import { getLiveBlogsPosts, LiveBlogPostsRequestOptions, loadSites } from '../services/sites';
 import { Site, SiteNode } from '../types/site';
 import { makeRequest } from './http-client';
-import { PageData, RagOnItemsResponse, RollbackResponse, WebpageModel, WebpageNodeModel, LiveBlogPost } from '../types/content';
+import {
+  LiveBlogPost,
+  PageData,
+  RagOnItemsResponse,
+  RollbackResponse,
+  WebpageModel,
+  WebpageNodeModel,
+} from '../types/content';
 import { VERSIONS } from '../conf/versions';
-import { getCurrentUserInfo, GetCurrentUserInfoOptions, getUserAvatar, GetUserAvatarOptions, LoginRequestOptions, login } from '../services/users';
-import { promoteContentLive, unpromoteContentLive, updateContentItem, PromoteContentLiveOptions, UpdateContentItemOptions, rollbackVersion, RollbackVersionOptions} from '../services/contents';
-import { User,UserWithAuthentication } from '../types/user';
-import { askAboutContents, AskAboutContentsOptions, SearchOptions, search } from '../services/augmented-search';
+import {
+  getCurrentUserInfo,
+  GetCurrentUserInfoOptions,
+  getUserAvatar,
+  GetUserAvatarOptions,
+  login,
+  LoginRequestOptions,
+} from '../services/users';
+import {
+  promoteContentLive,
+  PromoteContentLiveOptions,
+  rollbackVersion,
+  RollbackVersionOptions,
+  unpromoteContentLive,
+  updateContentItem,
+  UpdateContentItemOptions,
+} from '../services/contents';
+import { User, UserWithAuthentication } from '../types/user';
+import { askAboutContents, AskAboutContentsOptions, search, SearchOptions } from '../services/augmented-search';
 import { AuthContext } from '../types/base';
 import { validateEditorialAuthContext } from './utils';
 
@@ -25,7 +47,7 @@ type BackendInfo = {
 export class NeonConnection {
   RELOAD_ATTEMPT_TIME = 10000;
   sites: Site[] = [];
-  lastLoadSites: Date = new Date(1970,0,1,0,0,0,0);
+  lastLoadSites: Date = new Date(1970, 0, 1, 0, 0, 0, 0);
   frontOfficeServiceKey = '';
 
   constructor({ frontOfficeServiceKey, neonFoUrl }: NeonConnectionParams) {
@@ -79,12 +101,23 @@ export class NeonConnection {
   }
 
   //No response type defined because the callers does not need it
-  async makeApiRequest(url: string, auth?: AuthContext, params?: RequestInit, apiHostname?: string, convertToJSON = false): Promise<Response> {
+  async makeApiRequest(
+    url: string,
+    auth?: AuthContext,
+    params?: RequestInit,
+    apiHostname?: string,
+    convertToJSON = false,
+  ): Promise<Response> {
     const response = await makeRequest({ url, auth, params, apiHostname, convertToJSON });
     return response;
   }
 
-  async makePageRequest(url: string, auth?: AuthContext, params?: RequestInit, apiHostname?: string): Promise<Response> {
+  async makePageRequest(
+    url: string,
+    auth?: AuthContext,
+    params?: RequestInit,
+    apiHostname?: string,
+  ): Promise<Response> {
     const response = await makeRequest({ url, auth, params, apiHostname, convertToJSON: false, calculateURL: false });
     return response;
   }
@@ -100,23 +133,21 @@ export class NeonConnection {
     return this.sites;
   }
 
-  async search(options: SearchOptions){
+  async search(options: SearchOptions) {
     return await search(options);
   }
 
   async refreshLiveSites() {
     this.sites = await loadSites({ sitemap: true, viewStatus: 'live' });
-
     return this.sites;
   }
 
   async refreshPreviewSites() {
     this.sites = await loadSites({ sitemap: true, viewStatus: 'preview' });
-
     return this.sites;
   }
 
-  async resolveApiHostname(hostname: string) : Promise<{ apiHostname: string; viewStatus: string; root: SiteNode }> {
+  async resolveApiHostname(hostname: string): Promise<{ apiHostname: string; viewStatus: string; root: SiteNode }> {
     const sites = await this.getSitesList();
 
     const siteFound = sites.find(site => site.root.hostname === hostname);
@@ -136,29 +167,23 @@ export class NeonConnection {
         };
       }
     } else {
-       // could be that is a new site that is not in the list
-       if (this.lastLoadSites < new Date(Date.now() - this.RELOAD_ATTEMPT_TIME)) {
-          // reload the sites list if the last load was more than 10 seconds ago
-          console.log(`Reloading sites list... because hostname ${hostname} not found`);
-          const liveSites = await this.refreshLiveSites();
-          const previewSites = await this.refreshPreviewSites();
-          this.sites = [...liveSites, ...previewSites];
-          this.lastLoadSites = new Date();
-          return this.resolveApiHostname(hostname);
-       }
+      // could be that is a new site that is not in the list
+      if (this.lastLoadSites < new Date(Date.now() - this.RELOAD_ATTEMPT_TIME)) {
+        // reload the sites list if the last load was more than 10 seconds ago
+        console.log(`Reloading sites list... because hostname ${hostname} not found`);
+        const liveSites = await this.refreshLiveSites();
+        const previewSites = await this.refreshPreviewSites();
+        this.sites = [...liveSites, ...previewSites];
+        this.lastLoadSites = new Date();
+        return this.resolveApiHostname(hostname);
+      }
     }
     throw new Error(`Could not resolve hostname: ${hostname}`);
   }
 
-  async getSiteByName(name: string) {
+  async findSite(name: string, viewStatus?: string) {
     const sites = await this.getSitesList();
-
-    return sites.find(site => site.root.name === name);
-  }
-
-  async getSiteBySiteId(siteId: string) {
-    const sites = await this.getSitesList();
-    return sites.find(site => site.root.id === siteId);
+    return sites.find(site => site.root.name === name && (viewStatus === undefined || site.viewStatus === viewStatus));
   }
 
   async previewAuthorization(contentId: string, siteName: string, viewStatus: string, editorialAuth: string) {
