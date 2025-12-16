@@ -62,7 +62,7 @@ export type PageData<GenericModel extends BaseModel> = {
   nodesUrl: Record<string, string>;
   requestParam: Record<string, string>;
   resourcesUrls: Record<string, string>;
-  siteData: Site;
+  siteData: Partial<Site>;
   siteNode: SiteNode;
 };
 
@@ -160,9 +160,9 @@ export type NodeHistory = {
   acquireTimestamp: number;
   versions: NodeVersion[];
   viewStatus: string;
-  latestLiveVersion: string
+  latestLiveVersion: string;
   latestEditableVersion: string;
-}
+};
 
 export type Tag = {
   name: string;
@@ -205,7 +205,7 @@ export type RagOnItemsResponse = {
 
 export type RollbackResponse = {
   nodeRef: string;
-}
+};
 
 export type LiveBlogPost = {
   id: string;
