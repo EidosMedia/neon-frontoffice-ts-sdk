@@ -1,32 +1,39 @@
 import { AuthenticatedRequestOptions } from '../types/base';
 import { RagOnItemsResponse } from '../types/content';
-import { makeRequest, makePostRequest} from '../utilities/http-client';
+import { makeRequest, makePostRequest } from '../utilities/http-client';
 
 export type AskAboutContentsOptions = {
-    query: string;
-    ids?: string[];
-    baseUrl: string;
+  query: string;
+  ids?: string[];
+  baseUrl: string;
 } & AuthenticatedRequestOptions;
 
 export type SearchOptions = {
-    apiHostname: string;
-    searchParams: URLSearchParams;
+  apiHostname: string;
+  searchParams: URLSearchParams;
 } & AuthenticatedRequestOptions;
 
-export async function askAboutContents({  query, ids , baseUrl, auth }: AskAboutContentsOptions): Promise<RagOnItemsResponse> {
-
-    const response = await makePostRequest(
-      {
-        url: `${baseUrl}/api/augmented-search/public/liveindex/rag?query=${query}`,
-        auth
+export async function askAboutContents({
+  query,
+  ids,
+  baseUrl,
+  auth,
+}: AskAboutContentsOptions): Promise<RagOnItemsResponse> {
+  const response = await makePostRequest(
+    {
+      url: `${baseUrl}/api/augmented-search/public/liveindex/rag?query=${query}`,
+      auth,
+      params: {
+        headers: { 'Content-Type': 'application/json' },
       },
-      JSON.stringify(ids)
-    );
+    },
+    JSON.stringify(ids),
+  );
 
-    return response;
-  }
+  return response;
+}
 
-  export async function search({ apiHostname, searchParams, auth }: SearchOptions) {
+export async function search({ apiHostname, searchParams, auth }: SearchOptions) {
   try {
     const ragsearch = searchParams.get('rag') === 'true';
     const naturalsearch = searchParams.get('rag') === 'false';
@@ -41,7 +48,7 @@ export async function askAboutContents({  query, ids , baseUrl, auth }: AskAbout
     return await makeRequest({
       url: `${url}?${searchParams}`,
       auth,
-      apiHostname
+      apiHostname,
     });
   } catch (error) {
     console.log('Error in search POST request:', error);
@@ -49,7 +56,7 @@ export async function askAboutContents({  query, ids , baseUrl, auth }: AskAbout
       error instanceof Error && error.cause instanceof Response
         ? { error: error.cause.statusText }
         : { error: 'Internal Server Error' },
-      error instanceof Error && error.cause instanceof Response ? { status: error.cause.status } : { status: 500 }
+      error instanceof Error && error.cause instanceof Response ? { status: error.cause.status } : { status: 500 },
     );
   }
 }
