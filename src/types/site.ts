@@ -10,6 +10,7 @@ export type SiteNode = {
   hostname: string;
   previewHostname: string;
   attributes?: Record<string, any>;
+  staticAttributes?: Record<string, any>;
 };
 
 export type SiteApiHostnames = {
