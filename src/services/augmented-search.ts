@@ -1,5 +1,4 @@
 import { AuthenticatedRequestOptions } from '../types/base';
-import { RagOnItemsResponse } from '../types/content';
 import { makeRequest, makePostRequest } from '../utilities/http-client';
 
 export type AskAboutContentsOptions = {
@@ -18,19 +17,27 @@ export async function askAboutContents({
   ids,
   baseUrl,
   auth,
-}: AskAboutContentsOptions): Promise<RagOnItemsResponse> {
-  const response = await makePostRequest(
-    {
-      url: `${baseUrl}/api/augmented-search/public/liveindex/rag?query=${query}`,
-      auth,
-      params: {
-        headers: { 'Content-Type': 'application/json' },
+}: AskAboutContentsOptions) {
+  try {
+    return await makePostRequest(
+      {
+        url: `${baseUrl}/api/search/ragOnItems?query=${query}`,
+        auth,
+        params: {
+          headers: { 'Content-Type': 'application/json' },
+        },
       },
-    },
-    JSON.stringify(ids),
-  );
-
-  return response;
+      JSON.stringify(ids),
+    );
+  } catch (error) {
+        console.log('Error in search POST request:', error);
+    return Response.json(
+      error instanceof Error && error.cause instanceof Response
+        ? { error: error.cause.statusText }
+        : { error: 'Internal Server Error' },
+      error instanceof Error && error.cause instanceof Response ? { status: error.cause.status } : { status: 500 },
+    );
+  }
 }
 
 export async function search({ apiHostname, searchParams, auth }: SearchOptions) {

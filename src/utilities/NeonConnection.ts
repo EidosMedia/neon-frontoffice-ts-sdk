@@ -82,7 +82,7 @@ export class NeonConnection {
     return await updateContentItem(options);
   }
 
-  async askAboutContents(options: AskAboutContentsOptions): Promise<RagOnItemsResponse> {
+  async askAboutContents(options: AskAboutContentsOptions) {
     return await askAboutContents(options);
   }
 
