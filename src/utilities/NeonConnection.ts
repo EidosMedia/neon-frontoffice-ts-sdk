@@ -112,6 +112,11 @@ export class NeonConnection {
     return response;
   }
 
+  async fetchUiComponent(filePath: string): Promise<Response> {
+    const url = `${settings.neonFoUrl}/shared/uicomponents/${filePath}`;
+    return await makeRequest({ url, convertToJSON: false, calculateURL: false });
+  }
+
   async makePageRequest(
     url: string,
     auth?: AuthContext,
