@@ -42,12 +42,11 @@ export async function askAboutContents({
 
 export async function search({ apiHostname, searchParams, auth }: SearchOptions) {
   try {
-    const ragsearch = searchParams.get('rag') === 'true';
-    const naturalsearch = searchParams.get('rag') === 'false';
+    const chatsearch = searchParams.get('searchType') === 'CHAT';
 
-    const url = ragsearch || naturalsearch ? '/api/search/natural' : '/api/search';
+    const url = chatsearch ? '/api/search/chat' : '/api/search';
 
-    if (!(ragsearch || naturalsearch)) {
+    if (!chatsearch && !searchParams.has('baseType')) {
       searchParams.append('baseType', 'article');
       searchParams.append('baseType', 'liveblog');
     }
