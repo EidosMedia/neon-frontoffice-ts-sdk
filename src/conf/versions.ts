@@ -6,4 +6,6 @@ export const VERSIONS: string[] = [
   'NEON.2026.03',
   'NEON.2026.06-SNAPSHOT',
   'NEON.2026.06',
+  'NEON.2026.09-SNAPSHOT',
+  'NEON.2026.09',
 ];
