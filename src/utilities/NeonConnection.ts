@@ -211,10 +211,10 @@ export class NeonConnection {
     }
 
     try {
-      linkedObjects = pageData.model.data.links?.pagelink[zoneName].map(link => {
+      linkedObjects = pageData.model.data.links?.pagelink[zoneName].filter(link => !!link?.targetId).map(link => {
         const webPageBaseNode = pageData.model.nodes[link.targetId];
 
-        const mainPicureId = webPageBaseNode?.links?.system?.mainPicture[0].targetId;
+        const mainPicureId = webPageBaseNode?.links?.system?.mainPicture?.[0]?.targetId;
         const mainPicuretNode = pageData.model.nodes[mainPicureId];
 
         const webpageNode: WebpageNodeModel = {
