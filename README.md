@@ -45,3 +45,26 @@ import { NeonConnection } from '@eidosmedia/neon-frontoffice-ts-sdk';
 
 const connection = new NeonConnection();
 ```
+
+## Shared View Status Contract
+
+The SDK owns and exports the canonical view-status contract. Applications must import it from
+the SDK rather than defining a duplicate representation:
+
+```typescript
+import {
+	ViewStatus,
+	getSwitchTargetViewStatus,
+	normalizeViewStatus,
+	toSiteViewStatus,
+	type SiteViewStatus,
+} from '@eidosmedia/neon-frontoffice-ts-sdk';
+
+const editorialStatus = normalizeViewStatus('preview'); // ViewStatus.PREVIEW
+const siteApiStatus: SiteViewStatus = toSiteViewStatus(editorialStatus); // 'preview'
+const targetStatus = getSwitchTargetViewStatus(editorialStatus); // ViewStatus.LIVE
+```
+
+`ViewStatus` uses uppercase values (`LIVE`, `PREVIEW`) for editorial and application state.
+`SiteViewStatus` uses lowercase values (`live`, `preview`) for Neon site API paths. The SDK must
+remain independent of consuming applications and must not import their source files.

@@ -1,5 +1,6 @@
 import { AuthenticatedRequestOptions } from './base';
 import { Site, SiteNode } from './site';
+import type { ViewStatus } from './viewStatus';
 
 export type PageConfiguration = {
   development?: boolean;
@@ -159,7 +160,7 @@ export type NodeHistory = {
   version: string;
   acquireTimestamp: number;
   versions: NodeVersion[];
-  viewStatus: string;
+  viewStatus: ViewStatus;
   latestLiveVersion: string;
   latestEditableVersion: string;
 };

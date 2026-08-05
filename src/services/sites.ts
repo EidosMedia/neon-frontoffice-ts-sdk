@@ -4,8 +4,9 @@ import { LiveBlogPost } from '../types/content';
 import { makeRequest } from '../utilities/http-client';
 import logger from '../utilities/logger';
 import { AuthenticatedRequestOptions } from '../types/base';
+import type { SiteViewStatus } from '../types/viewStatus';
 
-export async function loadSites({ sitemap, viewStatus }: { sitemap: boolean; viewStatus: string }) {
+export async function loadSites({ sitemap, viewStatus }: { sitemap: boolean; viewStatus: SiteViewStatus }): Promise<Site[]> {
   const sites = await makeRequest({
     url: `/api/sites/${viewStatus}?${new URLSearchParams({
       siteMap: sitemap.toString(),
@@ -16,7 +17,7 @@ export async function loadSites({ sitemap, viewStatus }: { sitemap: boolean; vie
     sites.map(async (site: Site) => ({
       ...site,
       logoUrl: await fetchLiveLogoUrl(site),
-      viewStatus: `${viewStatus}`,
+      viewStatus,
       menus: await fetchLiveMenus(site),
     }))
   );

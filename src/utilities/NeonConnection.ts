@@ -31,6 +31,13 @@ import {
 import { User, UserWithAuthentication } from '../types/user';
 import { askAboutContents, AskAboutContentsOptions, search, SearchOptions } from '../services/augmented-search';
 import { AuthContext } from '../types/base';
+import {
+  normalizeViewStatus,
+  parseViewStatus,
+  toSiteViewStatus,
+  ViewStatus,
+  type SiteViewStatus,
+} from '../types/viewStatus';
 import { validateEditorialAuthContext } from './utils';
 
 type NeonConnectionParams = {
@@ -143,31 +150,32 @@ export class NeonConnection {
   }
 
   async refreshLiveSites() {
-    this.sites = await loadSites({ sitemap: true, viewStatus: 'live' });
+    this.sites = await loadSites({ sitemap: true, viewStatus: toSiteViewStatus(ViewStatus.LIVE) });
     return this.sites;
   }
 
   async refreshPreviewSites() {
-    this.sites = await loadSites({ sitemap: true, viewStatus: 'preview' });
+    this.sites = await loadSites({ sitemap: true, viewStatus: toSiteViewStatus(ViewStatus.PREVIEW) });
     return this.sites;
   }
 
-  async resolveApiHostname(hostname: string): Promise<{ apiHostname: string; viewStatus: string; root: SiteNode }> {
+  async resolveApiHostname(hostname: string): Promise<{ apiHostname: string; viewStatus: ViewStatus; root: SiteNode }> {
     const sites = await this.getSitesList();
 
     const siteFound = sites.find(site => site.root.hostname === hostname);
 
     if (siteFound) {
-      if (siteFound.viewStatus === 'live') {
+      const normalizedSiteViewStatus = normalizeViewStatus(siteFound.viewStatus, ViewStatus.PREVIEW);
+      if (normalizedSiteViewStatus === ViewStatus.LIVE) {
         return {
           apiHostname: siteFound.apiHostnames.liveHostname,
-          viewStatus: 'LIVE',
+          viewStatus: ViewStatus.LIVE,
           root: siteFound.root,
         };
       } else {
         return {
           apiHostname: siteFound.apiHostnames.previewHostname,
-          viewStatus: 'PREVIEW',
+          viewStatus: ViewStatus.PREVIEW,
           root: siteFound.root,
         };
       }
@@ -186,12 +194,24 @@ export class NeonConnection {
     throw new Error(`Could not resolve hostname: ${hostname}`);
   }
 
-  async findSite(name: string, viewStatus?: string) {
+  async findSite(name: string, viewStatus?: ViewStatus | SiteViewStatus) {
     const sites = await this.getSitesList();
-    return sites.find(site => site.root.name === name && (viewStatus === undefined || site.viewStatus === viewStatus));
+    const normalizedRequestedViewStatus = parseViewStatus(viewStatus);
+
+    return sites.find(site => {
+      if (site.root.name.toLowerCase() !== name.toLowerCase()) {
+        return false;
+      }
+
+      if (!normalizedRequestedViewStatus) {
+        return true;
+      }
+
+      return normalizeViewStatus(site.viewStatus) === normalizedRequestedViewStatus;
+    });
   }
 
-  async previewAuthorization(contentId: string, siteName: string, viewStatus: string, editorialAuth: string) {
+  async previewAuthorization(contentId: string, siteName: string, viewStatus: ViewStatus, editorialAuth: string) {
     const auth: AuthContext = {
       editorialAuth: editorialAuth,
       webAuth: '',

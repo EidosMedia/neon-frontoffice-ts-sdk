@@ -1,3 +1,5 @@
+import type { SiteViewStatus } from './viewStatus';
+
 export type SiteNode = {
   id: string;
   name: string;
@@ -26,7 +28,7 @@ export type Site = {
   siteName: string;
   nodes: Record<string, SiteNode>;
   apiHostnames: SiteApiHostnames;
-  viewStatus: string;
+  viewStatus: SiteViewStatus;
 };
 
 export type MenuItem = {
