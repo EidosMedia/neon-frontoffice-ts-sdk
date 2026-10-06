@@ -118,9 +118,8 @@ interface PageLinks {
 }
 
 export type WebpageModel = {
-  attributes: Record<string, unknown> & {
-    zoneAccessories?: Record<string, AccessorySet>;
-  };
+  attributes: Record<string, unknown>;
+  zoneAccessories?: Record<string, AccessorySet>;
   links: PageLinks;
   resourceUrl: string;
   dataType: string;

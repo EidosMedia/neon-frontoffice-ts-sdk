@@ -72,6 +72,6 @@ remain independent of consuming applications and must not import their source fi
 ## Accessory and Link Metadata
 
 The SDK exports `AccessorySet`, `AccessoryValues`, and `LinkMetadata` from `types/content.ts`.
-Webpage zone accessory sets are available under `WebpageModel.attributes.zoneAccessories`, keyed
+Webpage zone accessory sets are available under top-level `WebpageModel.zoneAccessories`, keyed
 by zone name. `getDwxLinkedObjects()` keeps each page link's metadata in
 `WebpageNodeModel.linkMetadata`, separate from the linked node's own attributes.
