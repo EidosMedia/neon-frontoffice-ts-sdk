@@ -106,6 +106,7 @@ interface Links {
 
 interface PageLinkTargetId {
   targetId: string;
+  metadata?: LinkMetadata;
 }
 
 interface PageLink {
@@ -117,7 +118,9 @@ interface PageLinks {
 }
 
 export type WebpageModel = {
-  attributes: Record<string, unknown>;
+  attributes: Record<string, unknown> & {
+    zoneAccessories?: Record<string, AccessorySet>;
+  };
   links: PageLinks;
   resourceUrl: string;
   dataType: string;
@@ -125,7 +128,28 @@ export type WebpageModel = {
 
 export type WebpageNodeModel = {
   mainPicture?: string;
+  linkMetadata?: LinkMetadata;
 } & BaseModel;
+
+export type AccessoryValues = {
+  version?: string;
+  values?: Record<string, unknown>;
+};
+
+export type AccessorySet = {
+  theme?: string;
+  type?: string;
+  zone?: string;
+  linkedType?: string;
+  items?: Record<string, AccessoryValues>;
+};
+
+export type LinkMetadata = {
+  metadataType?: string;
+  template?: string;
+  linkAccessories?: AccessorySet;
+  [key: string]: unknown;
+};
 
 export type VersionPubInfo = {
   siteName: string;

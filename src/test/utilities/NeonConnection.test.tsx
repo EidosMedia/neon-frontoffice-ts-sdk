@@ -3,6 +3,7 @@ import { NeonConnection } from "../../utilities/NeonConnection";
 import fs from "fs";
 import path from "path";
 import { Site } from "../../types/site";
+import type { PageData, WebpageModel } from "../../types/content";
 
 const connection = new NeonConnection({
   frontOfficeServiceKey: 'yourServiceKey',
@@ -30,6 +31,38 @@ describe("NeonConnection test module.", () => {
       );
       expect(result[0].summary).toBe("Sample story by cfg by code");
     });
+  });
+
+  test("Get Dwp linked objects preserves link metadata", async () => {
+    const linkMetadata = {
+      metadataType: "pagelink",
+      template: "teaser",
+      linkAccessories: {
+        theme: "default",
+        type: "webpage",
+        zone: "main",
+        linkedType: "article",
+        items: {},
+      },
+    };
+    const pageData = {
+      model: {
+        data: {
+          links: {
+            pagelink: {
+              main: [{ targetId: "node-1", metadata: linkMetadata }],
+            },
+          },
+        },
+        nodes: {
+          "node-1": { id: "node-1", links: { system: { mainPicture: [] } } },
+        },
+      },
+    } as unknown as PageData<WebpageModel>;
+
+    const linkedObjects = await connection.getDwxLinkedObjects(pageData, "main");
+
+    expect(linkedObjects[0].linkMetadata).toEqual(linkMetadata);
   });
 });
 

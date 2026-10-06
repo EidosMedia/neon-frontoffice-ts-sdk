@@ -240,6 +240,7 @@ export class NeonConnection {
         const webpageNode: WebpageNodeModel = {
           ...webPageBaseNode,
           mainPicture: mainPicuretNode?.resourceUrl,
+          linkMetadata: link.metadata,
         };
 
         return webpageNode;
