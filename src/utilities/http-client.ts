@@ -11,22 +11,29 @@ type MakeRequestOptions = {
   calculateURL?: boolean;
 };
 
-export async function makeRequest({ url, auth, params, apiHostname, convertToJSON=true, calculateURL=true }: MakeRequestOptions) {
+export async function makeRequest({
+  url,
+  auth,
+  params,
+  apiHostname,
+  convertToJSON = true,
+  calculateURL = true,
+}: MakeRequestOptions) {
   let requestUrl: string;
-  if(calculateURL){
+  if (calculateURL) {
     requestUrl = url.startsWith('http') ? url : `${settings.neonFoUrl}${url}`;
 
     if (apiHostname) {
       requestUrl = new URL(url, apiHostname).toString();
     }
-  }else{
+  } else {
     requestUrl = url;
   }
 
   let authHeaders: Record<string, string> = {};
   if (auth && (auth.webAuth || auth.editorialAuth)) {
     authHeaders = {
-      Authorization: `Bearer ${auth.webAuth || auth.editorialAuth}`,
+      Authorization: `Bearer ${auth.editorialAuth || auth.webAuth}`,
       ...(auth.contextId ? { 'update-context-id': auth.contextId } : {}),
       ...(params?.headers as Record<string, string> | undefined),
     };
@@ -83,7 +90,10 @@ export async function makeRequest({ url, auth, params, apiHostname, convertToJSO
   return response;
 }
 
-export async function makePostRequest({ url, auth, params, apiHostname, convertToJSON }: MakeRequestOptions, payload: string) {
+export async function makePostRequest(
+  { url, auth, params, apiHostname, convertToJSON }: MakeRequestOptions,
+  payload: string,
+) {
   return await makeRequest({
     url,
     auth,
@@ -99,7 +109,7 @@ export async function makePostRequest({ url, auth, params, apiHostname, convertT
 
 export async function makePostRequestXMLPayload(
   { url, auth, params, apiHostname }: MakeRequestOptions,
-  payload: string
+  payload: string,
 ) {
   if (isValidXML(payload)) {
     throw {
