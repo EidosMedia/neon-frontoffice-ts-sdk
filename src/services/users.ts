@@ -4,13 +4,10 @@ import { AuthenticatedRequestOptions } from '../types/base';
 import settings from '../commons/settings';
 import logger from '../utilities/logger';
 
-export type GetCurrentUserInfoOptions = {
-  apiHostname?: string;
-} & AuthenticatedRequestOptions;
+export type GetCurrentUserInfoOptions = {} & AuthenticatedRequestOptions;
 
 export type GetUserAvatarOptions = {
   id: string;
-  apiHostname?: string;
 } & AuthenticatedRequestOptions;
 
 export type LoginRequestOptions = {
@@ -20,15 +17,14 @@ export type LoginRequestOptions = {
   rememberMe?: boolean;
 };
 
-export async function getCurrentUserInfo({ auth, apiHostname }: GetCurrentUserInfoOptions): Promise<User> {
-  const target = apiHostname ?? settings.neonFoUrl;
-  const neonUser = await makeRequest({ url: `/directory/sessions/whoami`, auth, apiHostname });
+export async function getCurrentUserInfo({ auth }: GetCurrentUserInfoOptions): Promise<User> {
+  const neonUser = await makeRequest({ url: `/directory/sessions/whoami`, auth });
   const response = neonUser instanceof Response ? neonUser : undefined;
 
   logger.info(
     {
       event: 'whoami-response',
-      target,
+      target: settings.neonFoUrl,
       hasEditorialAuth: Boolean(auth?.editorialAuth),
       hasWebAuth: Boolean(auth?.webAuth),
       status: response?.status,
@@ -48,8 +44,8 @@ export async function getCurrentUserInfo({ auth, apiHostname }: GetCurrentUserIn
   return filteredUser;
 }
 
-export async function getUserAvatar({ id, auth, apiHostname }: GetUserAvatarOptions): Promise<Response> {
-  const user = await makeRequest({ url: `/directory/users/picture?id=${id}`, auth, apiHostname });
+export async function getUserAvatar({ id, auth }: GetUserAvatarOptions): Promise<Response> {
+  const user = await makeRequest({ url: `/directory/users/picture?id=${id}`, auth });
 
   return user;
 }
