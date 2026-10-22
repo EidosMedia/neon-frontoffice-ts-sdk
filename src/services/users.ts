@@ -1,22 +1,25 @@
 import { makeRequest, makePostRequest } from '../utilities/http-client';
-import { User,UserWithAuthentication } from '../types/user';
+import { User, UserWithAuthentication } from '../types/user';
 import { AuthenticatedRequestOptions } from '../types/base';
 
-export type GetCurrentUserInfoOptions = {} & AuthenticatedRequestOptions;
+export type GetCurrentUserInfoOptions = {
+  apiHostname?: string;
+} & AuthenticatedRequestOptions;
 
 export type GetUserAvatarOptions = {
   id: string;
+  apiHostname?: string;
 } & AuthenticatedRequestOptions;
 
 export type LoginRequestOptions = {
-  apiHostname: string; 
+  apiHostname: string;
   name: string;
   password: string;
   rememberMe?: boolean;
 };
 
-export async function getCurrentUserInfo({ auth }: GetCurrentUserInfoOptions): Promise<User> {
-  const neonUser = await makeRequest({ url: `/directory/sessions/whoami`, auth });
+export async function getCurrentUserInfo({ auth, apiHostname }: GetCurrentUserInfoOptions): Promise<User> {
+  const neonUser = await makeRequest({ url: `/directory/sessions/whoami`, auth, apiHostname });
 
   const filteredUser: User = {
     name: neonUser.user.name,
@@ -27,13 +30,18 @@ export async function getCurrentUserInfo({ auth }: GetCurrentUserInfoOptions): P
   return filteredUser;
 }
 
-export async function getUserAvatar({ id, auth }: GetUserAvatarOptions): Promise<Response> {
-  const user = await makeRequest({ url: `/directory/users/picture?id=${id}`, auth });
+export async function getUserAvatar({ id, auth, apiHostname }: GetUserAvatarOptions): Promise<Response> {
+  const user = await makeRequest({ url: `/directory/users/picture?id=${id}`, auth, apiHostname });
 
   return user;
 }
 
-export async function login({ apiHostname, name, password, rememberMe=false }: LoginRequestOptions): Promise<UserWithAuthentication> {
+export async function login({
+  apiHostname,
+  name,
+  password,
+  rememberMe = false,
+}: LoginRequestOptions): Promise<UserWithAuthentication> {
   const url = `/api/login?rememberMe=${rememberMe}`;
 
   const options: RequestInit = {
@@ -47,7 +55,7 @@ export async function login({ apiHostname, name, password, rememberMe=false }: L
 
   const response = await makePostRequest(
     { apiHostname, url, params: options, convertToJSON: false },
-    JSON.stringify({ name, password })
+    JSON.stringify({ name, password }),
   );
 
   // Get the 'webauth' cookie from the response headers
