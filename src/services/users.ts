@@ -1,6 +1,8 @@
 import { makeRequest, makePostRequest } from '../utilities/http-client';
 import { User, UserWithAuthentication } from '../types/user';
 import { AuthenticatedRequestOptions } from '../types/base';
+import settings from '../commons/settings';
+import logger from '../utilities/logger';
 
 export type GetCurrentUserInfoOptions = {
   apiHostname?: string;
@@ -19,7 +21,23 @@ export type LoginRequestOptions = {
 };
 
 export async function getCurrentUserInfo({ auth, apiHostname }: GetCurrentUserInfoOptions): Promise<User> {
+  const target = apiHostname ?? settings.neonFoUrl;
   const neonUser = await makeRequest({ url: `/directory/sessions/whoami`, auth, apiHostname });
+  const response = neonUser instanceof Response ? neonUser : undefined;
+
+  logger.info(
+    {
+      event: 'whoami-response',
+      target,
+      hasEditorialAuth: Boolean(auth?.editorialAuth),
+      hasWebAuth: Boolean(auth?.webAuth),
+      status: response?.status,
+      contentType: response?.headers.get('content-type'),
+      keys: response ? undefined : Object.keys(neonUser ?? {}),
+      hasUser: Boolean(neonUser?.user),
+    },
+    'whoami response',
+  );
 
   const filteredUser: User = {
     name: neonUser.user.name,
