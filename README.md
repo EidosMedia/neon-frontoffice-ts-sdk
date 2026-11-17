@@ -75,3 +75,13 @@ The SDK exports `AccessorySet`, `AccessoryValues`, and `LinkMetadata` from `type
 Webpage zone accessory sets are available under top-level `WebpageModel.zoneAccessories`, keyed
 by zone name. `getDwxLinkedObjects()` keeps each page link's metadata in
 `WebpageNodeModel.linkMetadata`, separate from the linked node's own attributes.
+
+## Site Configuration Redaction
+
+Site configuration values (custom attributes on the site in Neon) arrive as `staticAttributes` on the
+site root and every page `siteNode`, and again as the page's `siteData.custom`. `redactSiteConfig()`
+(`utilities/siteConfig.ts`) removes secret keys from those objects in place: by default
+`DEFAULT_REDACTED_SITE_CONFIG_KEYS` (`invalidateNextJsHeaderName`, `invalidateNextJsHeaderValue`).
+`NeonConnection` takes `siteConfigRedaction: { expose?, keys? }` (`keys` replaces the default; an entry
+ending with `*` is a prefix; `expose: true` keeps everything, for debugging only). Sites are redacted
+when loaded; call `connection.redactSiteConfig(json)` on page JSON parsed from `makePageRequest()`.

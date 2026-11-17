@@ -6,3 +6,4 @@ export * from './types/content';
 export * from './types/user';
 export * from './types/viewStatus';
 export * from './utilities/utils';
+export * from './utilities/siteConfig';

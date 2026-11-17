@@ -3,6 +3,7 @@ import { Site, Menu } from '../types/site';
 import { LiveBlogPost } from '../types/content';
 import { makeRequest } from '../utilities/http-client';
 import logger from '../utilities/logger';
+import { redactSiteConfig } from '../utilities/siteConfig';
 import { AuthenticatedRequestOptions } from '../types/base';
 import type { SiteViewStatus } from '../types/viewStatus';
 
@@ -22,7 +23,8 @@ export async function loadSites({ sitemap, viewStatus }: { sitemap: boolean; vie
     }))
   );
 
-  return sitesWithSitemap;
+  // Site configuration secrets (cache invalidation header) must not reach rendered pages.
+  return redactSiteConfig(sitesWithSitemap, settings.siteConfigRedaction);
 
   async function fetchLiveLogoUrl(site: Site) {
     try {

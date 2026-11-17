@@ -39,10 +39,16 @@ import {
   type SiteViewStatus,
 } from '../types/viewStatus';
 import { validateEditorialAuthContext } from './utils';
+import { DEFAULT_SITE_CONFIG_REDACTION, redactSiteConfig, type SiteConfigRedaction } from './siteConfig';
 
 type NeonConnectionParams = {
   frontOfficeServiceKey: string;
   neonFoUrl: string;
+  /**
+   * Site configuration redaction. Defaults to removing `DEFAULT_REDACTED_SITE_CONFIG_KEYS` from every
+   * `staticAttributes`; pass `{ expose: true }` only to debug.
+   */
+  siteConfigRedaction?: Partial<SiteConfigRedaction>;
 };
 
 type BackendInfo = {
@@ -57,9 +63,21 @@ export class NeonConnection {
   lastLoadSites: Date = new Date(1970, 0, 1, 0, 0, 0, 0);
   frontOfficeServiceKey = '';
 
-  constructor({ frontOfficeServiceKey, neonFoUrl }: NeonConnectionParams) {
+  constructor({ frontOfficeServiceKey, neonFoUrl, siteConfigRedaction }: NeonConnectionParams) {
     settings.neonFoUrl = neonFoUrl;
     settings.frontOfficeServiceKey = frontOfficeServiceKey;
+    settings.siteConfigRedaction = {
+      expose: siteConfigRedaction?.expose ?? DEFAULT_SITE_CONFIG_REDACTION.expose,
+      keys: siteConfigRedaction?.keys ?? DEFAULT_SITE_CONFIG_REDACTION.keys,
+    };
+  }
+
+  /**
+   * Removes the configured secret keys from every `staticAttributes` in parsed page (or site) data, in
+   * place. Sites are already redacted when loaded; call this on page JSON from `makePageRequest`.
+   */
+  redactSiteConfig<T>(value: T): T {
+    return redactSiteConfig(value, settings.siteConfigRedaction);
   }
 
   async getCurrentUserInfo(options: GetCurrentUserInfoOptions): Promise<User> {
