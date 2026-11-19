@@ -60,7 +60,8 @@ type BackendInfo = {
 export class NeonConnection {
   RELOAD_ATTEMPT_TIME = 10000;
   sites: Site[] = [];
-  lastLoadSites: Date = new Date(1970, 0, 1, 0, 0, 0, 0);
+  // performance.now() timestamp (ms) of the last sites load; a monotonic clock avoids Date.now() during prerendering.
+  lastLoadSites = Number.NEGATIVE_INFINITY;
   frontOfficeServiceKey = '';
 
   constructor({ frontOfficeServiceKey, neonFoUrl, siteConfigRedaction }: NeonConnectionParams) {
@@ -157,7 +158,7 @@ export class NeonConnection {
       const liveSites = await this.refreshLiveSites();
       const previewSites = await this.refreshPreviewSites();
       this.sites = [...liveSites, ...previewSites];
-      this.lastLoadSites = new Date();
+      this.lastLoadSites = performance.now();
     }
 
     return this.sites;
@@ -199,13 +200,13 @@ export class NeonConnection {
       }
     } else {
       // could be that is a new site that is not in the list
-      if (this.lastLoadSites < new Date(Date.now() - this.RELOAD_ATTEMPT_TIME)) {
+      if (performance.now() - this.lastLoadSites > this.RELOAD_ATTEMPT_TIME) {
         // reload the sites list if the last load was more than 10 seconds ago
         console.log(`Reloading sites list... because hostname ${hostname} not found`);
         const liveSites = await this.refreshLiveSites();
         const previewSites = await this.refreshPreviewSites();
         this.sites = [...liveSites, ...previewSites];
-        this.lastLoadSites = new Date();
+        this.lastLoadSites = performance.now();
         return this.resolveApiHostname(hostname);
       }
     }

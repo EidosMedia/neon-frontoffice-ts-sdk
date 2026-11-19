@@ -135,3 +135,25 @@ describe("NeonConnection startup tests", () => {
     expect(mockLiveSitesList).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("NeonConnection hostname resolution during prerendering", () => {
+  test("unknown hostname reload throttle does not call Date.now", async () => {
+    const dateNow = jest.spyOn(Date, "now").mockImplementation(() => {
+      throw new Error("Date.now must not be called");
+    });
+    const site = { root: { name: "Home", hostname: "www.example.com" } } as unknown as Site;
+    const conn = new NeonConnection({ frontOfficeServiceKey: "key", neonFoUrl: "url" });
+    conn.getSitesList = jest.fn().mockImplementation(() => Promise.resolve([site])) as typeof conn.getSitesList;
+    conn.refreshLiveSites = jest.fn().mockImplementation(() => Promise.resolve([])) as typeof conn.refreshLiveSites;
+    conn.refreshPreviewSites = jest.fn().mockImplementation(() => Promise.resolve([])) as typeof conn.refreshPreviewSites;
+
+    try {
+      await expect(conn.resolveApiHostname("unknown.example.com")).rejects.toThrow(
+        "Could not resolve hostname: unknown.example.com"
+      );
+      expect(conn.refreshLiveSites).toHaveBeenCalledTimes(1);
+    } finally {
+      dateNow.mockRestore();
+    }
+  });
+});
