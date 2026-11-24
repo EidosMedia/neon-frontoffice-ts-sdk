@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { Site } from "../../types/site";
 import type { PageData, WebpageModel } from "../../types/content";
+import * as siteServices from "../../services/sites";
 
 const connection = new NeonConnection({
   frontOfficeServiceKey: 'yourServiceKey',
@@ -17,6 +18,75 @@ jest.mock("../../conf/versions", () => ({
     "NEON.2024.14.ea1-SNAPSHOT"
   ]
 }));
+
+describe("Site refresh", () => {
+  const site = (viewStatus: Site["viewStatus"]): Site => ({
+    viewStatus, siteName: "Test", logoUrl: "", menus: {}, nodes: {},
+    apiHostnames: { liveHostname: "", previewHostname: "", stageHostname: "" },
+    root: {
+      id: viewStatus, name: "Test", title: "Test", nodeType: "site", uri: "/", url: "/", path: "/",
+      hostname: `${viewStatus}.test`, previewHostname: "preview.test", items: [],
+    },
+  });
+  const makeConnection = () => new NeonConnection({ frontOfficeServiceKey: "", neonFoUrl: "https://neon.test" });
+
+  test("concurrent refreshes commit both views together", async () => {
+    const client = makeConnection();
+    const previous = [site("live"), site("preview")];
+    client.sites = previous;
+    let finishPreview!: (sites: Site[]) => void;
+    const pendingPreview = new Promise<Site[]>(resolve => { finishPreview = resolve; });
+    const load = jest.spyOn(siteServices, "loadSites").mockImplementation(async ({ viewStatus }) =>
+      viewStatus === "live" ? [site("live")] : pendingPreview);
+    try {
+      const first = client.refreshSites();
+      const second = client.refreshSites();
+      await Promise.resolve();
+      expect(client.sites).toBe(previous);
+      expect(load).toHaveBeenCalledTimes(2);
+      finishPreview([site("preview")]);
+      await Promise.all([first, second]);
+      expect(client.sites.map(s => s.viewStatus)).toEqual(["live", "preview"]);
+      expect(client.sites).not.toBe(previous);
+    } finally { load.mockRestore(); }
+  });
+
+  test("failed refresh retains both views and can retry", async () => {
+    const client = makeConnection();
+    const previous = [site("live"), site("preview")];
+    client.sites = previous;
+    const lastLoad = client.lastLoadSites;
+    const failure = { status: 502, url: "https://neon.test/api/sites/preview" };
+    const load = jest.spyOn(siteServices, "loadSites").mockImplementation(async ({ viewStatus }) => {
+      if (viewStatus === "preview") throw failure;
+      return [site("live")];
+    });
+    try {
+      await expect(client.refreshSites()).rejects.toBe(failure);
+      expect(client.sites).toBe(previous);
+      expect(client.lastLoadSites).toBe(lastLoad);
+      load.mockImplementation(async ({ viewStatus }) => [site(viewStatus)]);
+      await client.refreshSites();
+      expect(client.sites.map(s => s.viewStatus)).toEqual(["live", "preview"]);
+    } finally { load.mockRestore(); }
+  });
+
+  test("single-view refresh preserves the other view", async () => {
+    const client = makeConnection();
+    const live = site("live");
+    const preview = site("preview");
+    client.sites = [live, preview];
+    const load = jest.spyOn(siteServices, "loadSites").mockImplementation(async ({ viewStatus }) => [site(viewStatus)]);
+    try {
+      await client.refreshLiveSites();
+      expect(client.sites).toContain(preview);
+      const refreshedLive = client.sites[0];
+      await client.refreshPreviewSites();
+      expect(client.sites).toContain(refreshedLive);
+      expect(client.sites.map(s => s.viewStatus)).toEqual(["live", "preview"]);
+    } finally { load.mockRestore(); }
+  });
+});
 
 describe("NeonConnection test module.", () => {
   test("Get Dwp linked objects", async () => {
@@ -144,14 +214,16 @@ describe("NeonConnection hostname resolution during prerendering", () => {
     const site = { root: { name: "Home", hostname: "www.example.com" } } as unknown as Site;
     const conn = new NeonConnection({ frontOfficeServiceKey: "key", neonFoUrl: "url" });
     conn.getSitesList = jest.fn().mockImplementation(() => Promise.resolve([site])) as typeof conn.getSitesList;
-    conn.refreshLiveSites = jest.fn().mockImplementation(() => Promise.resolve([])) as typeof conn.refreshLiveSites;
-    conn.refreshPreviewSites = jest.fn().mockImplementation(() => Promise.resolve([])) as typeof conn.refreshPreviewSites;
+    conn.refreshSites = jest.fn().mockImplementation(async () => {
+      conn.lastLoadSites = performance.now();
+      return [site];
+    }) as typeof conn.refreshSites;
 
     try {
       await expect(conn.resolveApiHostname("unknown.example.com")).rejects.toThrow(
         "Could not resolve hostname: unknown.example.com"
       );
-      expect(conn.refreshLiveSites).toHaveBeenCalledTimes(1);
+      expect(conn.refreshSites).toHaveBeenCalledTimes(1);
     } finally {
       dateNow.mockRestore();
     }

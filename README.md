@@ -48,6 +48,11 @@ const connection = new NeonConnection();
 
 ## Shared View Status Contract
 
+`NeonConnection.refreshSites()` refreshes LIVE and PREVIEW together and replaces the site list only
+when both loads succeed. Concurrent calls share the pending refresh; failures reject and preserve
+the previous list. Background callers must handle that rejection. `refreshLiveSites()` and
+`refreshPreviewSites()` replace only their own view's entries and return the loaded view's sites.
+
 The SDK owns and exports the canonical view-status contract. Applications must import it from
 the SDK rather than defining a duplicate representation:
 

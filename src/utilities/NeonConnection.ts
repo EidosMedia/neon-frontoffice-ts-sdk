@@ -62,6 +62,7 @@ export class NeonConnection {
   sites: Site[] = [];
   // performance.now() timestamp (ms) of the last sites load; a monotonic clock avoids Date.now() during prerendering.
   lastLoadSites = Number.NEGATIVE_INFINITY;
+  private sitesRefresh?: Promise<Site[]>;
   frontOfficeServiceKey = '';
 
   constructor({ frontOfficeServiceKey, neonFoUrl, siteConfigRedaction }: NeonConnectionParams) {
@@ -155,10 +156,7 @@ export class NeonConnection {
 
   async getSitesList() {
     if (this.sites.length === 0) {
-      const liveSites = await this.refreshLiveSites();
-      const previewSites = await this.refreshPreviewSites();
-      this.sites = [...liveSites, ...previewSites];
-      this.lastLoadSites = performance.now();
+      return this.refreshSites();
     }
 
     return this.sites;
@@ -168,14 +166,34 @@ export class NeonConnection {
     return await search(options);
   }
 
+  async refreshSites(): Promise<Site[]> {
+    if (this.sitesRefresh) return this.sitesRefresh;
+    this.sitesRefresh = (async () => {
+      const [liveSites, previewSites] = await Promise.all([
+        loadSites({ sitemap: true, viewStatus: toSiteViewStatus(ViewStatus.LIVE) }),
+        loadSites({ sitemap: true, viewStatus: toSiteViewStatus(ViewStatus.PREVIEW) }),
+      ]);
+      this.sites = [...liveSites, ...previewSites];
+      this.lastLoadSites = performance.now();
+      return this.sites;
+    })();
+    try {
+      return await this.sitesRefresh;
+    } finally {
+      this.sitesRefresh = undefined;
+    }
+  }
+
   async refreshLiveSites() {
-    this.sites = await loadSites({ sitemap: true, viewStatus: toSiteViewStatus(ViewStatus.LIVE) });
-    return this.sites;
+    const sites = await loadSites({ sitemap: true, viewStatus: toSiteViewStatus(ViewStatus.LIVE) });
+    this.sites = [...sites, ...this.sites.filter(site => normalizeViewStatus(site.viewStatus) !== ViewStatus.LIVE)];
+    return sites;
   }
 
   async refreshPreviewSites() {
-    this.sites = await loadSites({ sitemap: true, viewStatus: toSiteViewStatus(ViewStatus.PREVIEW) });
-    return this.sites;
+    const sites = await loadSites({ sitemap: true, viewStatus: toSiteViewStatus(ViewStatus.PREVIEW) });
+    this.sites = [...this.sites.filter(site => normalizeViewStatus(site.viewStatus) !== ViewStatus.PREVIEW), ...sites];
+    return sites;
   }
 
   async resolveApiHostname(hostname: string): Promise<{ apiHostname: string; viewStatus: ViewStatus; root: SiteNode }> {
@@ -203,10 +221,7 @@ export class NeonConnection {
       if (performance.now() - this.lastLoadSites > this.RELOAD_ATTEMPT_TIME) {
         // reload the sites list if the last load was more than 10 seconds ago
         console.log(`Reloading sites list... because hostname ${hostname} not found`);
-        const liveSites = await this.refreshLiveSites();
-        const previewSites = await this.refreshPreviewSites();
-        this.sites = [...liveSites, ...previewSites];
-        this.lastLoadSites = performance.now();
+        await this.refreshSites();
         return this.resolveApiHostname(hostname);
       }
     }
